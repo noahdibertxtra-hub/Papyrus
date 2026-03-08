@@ -173,5 +173,4 @@ displayBooks(){
 ...
 updateStats();
 }
-
-<script src="script.js"></script>
+displayBooks();
