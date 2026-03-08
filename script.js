@@ -120,4 +120,21 @@ saveBooks();
 displayBooks();
 
 }
+function addFromSearch(title,author,cover){
+
+let book = {
+title:title,
+author:author,
+status:"want",
+rating:"",
+cover:cover
+};
+
+books.push(book);
+
+saveBooks();
+
+displayBooks();
+}
+
 <script src="script.js"></script>
