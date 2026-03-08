@@ -120,3 +120,4 @@ saveBooks();
 displayBooks();
 
 }
+<script src="script.js"></script>
