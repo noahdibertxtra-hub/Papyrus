@@ -47,3 +47,8 @@ margin-bottom:30px;
 #searchResults img{
 border-radius:4px;
 }
+.star{
+cursor:pointer;
+font-size:18px;
+color:gold;
+}
