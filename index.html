@@ -2,44 +2,41 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Papyrus - Book Tracker</title>
+<title>Papyrus</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<h1>📚 Papyrus Book Tracker</h1>
-<h2>Search Books</h2>
+<h1>Papyrus</h1>
 
+<!-- SEARCH SECTION -->
+<h2>Search Books</h2>
 <input id="searchInput" placeholder="Search for a book">
 <button onclick="searchBooks()">Search</button>
-
 <div id="searchResults"></div>
 
+<!-- ADD BOOK FORM -->
+<h2>Add Book Manually</h2>
 <div class="form">
 <input id="title" placeholder="Book title">
 <input id="author" placeholder="Author">
-
 <select id="status">
 <option value="reading">Reading</option>
 <option value="finished">Finished</option>
 <option value="want">Want to Read</option>
 </select>
-
-<input id="rating" type="number" min="1" max="5" placeholder="Rating 1-5">
-
 <button onclick="addBook()">Add Book</button>
 </div>
 
-  <h2>Reading Stats</h2>
-
+<!-- STATS -->
+<h2>Reading Stats</h2>
 <div id="stats"></div>
 
-<h2>Your Books</h2>
-
+<!-- LIBRARY -->
+<h2>Your Library</h2>
 <div id="bookList"></div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
