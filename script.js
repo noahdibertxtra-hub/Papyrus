@@ -126,7 +126,13 @@ let book = {
 title:title,
 author:author,
 status:"want",
-rating:"",
+Rating:
+<span class="star" onclick="rateBook(${index},1)">★</span>
+<span class="star" onclick="rateBook(${index},2)">★</span>
+<span class="star" onclick="rateBook(${index},3)">★</span>
+<span class="star" onclick="rateBook(${index},4)">★</span>
+<span class="star" onclick="rateBook(${index},5)">★</span>
+
 cover:cover
 };
 
