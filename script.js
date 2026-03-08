@@ -169,4 +169,9 @@ Want to Read: ${want}
 
 }
 
+displayBooks(){
+...
+updateStats();
+}
+
 <script src="script.js"></script>
