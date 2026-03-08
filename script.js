@@ -153,4 +153,20 @@ displayBooks();
 
 }
 
+function updateStats(){
+
+let finished = books.filter(b=>b.status==="finished").length;
+
+let reading = books.filter(b=>b.status==="reading").length;
+
+let want = books.filter(b=>b.status==="want").length;
+
+document.getElementById("stats").innerHTML = `
+Books Finished: ${finished}<br>
+Currently Reading: ${reading}<br>
+Want to Read: ${want}
+`;
+
+}
+
 <script src="script.js"></script>
