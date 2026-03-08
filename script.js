@@ -143,4 +143,14 @@ saveBooks();
 displayBooks();
 }
 
+function rateBook(index,rating){
+
+books[index].rating = rating;
+
+saveBooks();
+
+displayBooks();
+
+}
+
 <script src="script.js"></script>
