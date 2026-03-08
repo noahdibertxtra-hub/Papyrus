@@ -1,21 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Papyrus - Book Tracker</title>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<title>Papyrus - Book Tracker</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <header>
-    <h1>Papyrus</h1>
-    <p>Track your reading and rate your favorite books!</p>
-  </header>
 
-  <main>
-    <h2>My Book List</h2>
-    <div id="book-list"></div>
-  </main>
+<h1>📚 Papyrus Book Tracker</h1>
 
-  <script src="script.js"></script>
+<div class="form">
+<input id="title" placeholder="Book title">
+<input id="author" placeholder="Author">
+
+<select id="status">
+<option value="reading">Reading</option>
+<option value="finished">Finished</option>
+<option value="want">Want to Read</option>
+</select>
+
+<input id="rating" type="number" min="1" max="5" placeholder="Rating 1-5">
+
+<button onclick="addBook()">Add Book</button>
+</div>
+
+<h2>Your Books</h2>
+
+<div id="bookList"></div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
