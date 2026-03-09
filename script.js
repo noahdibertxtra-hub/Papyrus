@@ -73,7 +73,7 @@ function renderLibrary() {
   const readingShelf = document.getElementById("readingShelf");
   const finishedShelf = document.getElementById("finishedShelf");
 
-  // Clear shelves
+  // Clear all shelves
   wantShelf.innerHTML = "";
   readingShelf.innerHTML = "";
   finishedShelf.innerHTML = "";
@@ -82,14 +82,14 @@ function renderLibrary() {
     const bookCard = document.createElement("div");
     bookCard.className = "bookCard";
 
-    // Build stars dynamically
+    // Build stars
     let starsHTML = `<div class="stars">`;
     for (let i = 1; i <= 5; i++) {
-      starsHTML += `<span class="star" data-index="${i}">&#9733;</span>`;
+      starsHTML += `<span class="star">&#9733;</span>`;
     }
     starsHTML += `</div>`;
 
-    // Set innerHTML
+    // Set innerHTML for book
     bookCard.innerHTML = `
       <img src="${book.cover}">
       <h4>${book.title}</h4>
@@ -98,29 +98,41 @@ function renderLibrary() {
       <button class="remove-btn">Remove</button>
     `;
 
-    // Add event listener for stars
+    // Select stars in this card
     const stars = bookCard.querySelectorAll(".star");
-    stars.forEach(star => {
-      star.addEventListener("click", () => {
-        const rating = parseInt(star.getAttribute("data-index"));
-        library[index].rating = rating;
-        localStorage.setItem("library", JSON.stringify(library));
-        renderLibrary(); // Re-render to update star colors
+
+    // Add hover + click behavior
+    stars.forEach((star, i) => {
+
+      // Hover: temporarily show highlight up to this star
+      star.addEventListener("mouseenter", () => {
+        stars.forEach((s, idx) => {
+          s.style.color = idx <= i ? "gold" : "grey";
+        });
       });
+
+      // Hover out: restore saved rating
+      star.addEventListener("mouseleave", () => {
+        stars.forEach((s, idx) => {
+          s.style.color = idx < book.rating ? "gold" : "grey";
+        });
+      });
+
+      // Click: set rating
+      star.addEventListener("click", () => {
+        library[index].rating = i + 1;
+        localStorage.setItem("library", JSON.stringify(library));
+        renderLibrary(); // Re-render to update permanent color
+      });
+
     });
 
-    // Color the stars according to rating
-    const starsDiv = bookCard.querySelector(".stars");
-    const starsArray = starsDiv.querySelectorAll(".star");
-    starsArray.forEach((starEl, i) => {
-      if (i < book.rating) {
-        starEl.style.color = "gold";
-      } else {
-        starEl.style.color = "grey";
-      }
+    // Initialize star colors based on current rating
+    stars.forEach((s, idx) => {
+      s.style.color = idx < book.rating ? "gold" : "grey";
     });
 
-    // Add remove button listener
+    // Remove button functionality
     const removeBtn = bookCard.querySelector(".remove-btn");
     removeBtn.addEventListener("click", () => {
       library.splice(index, 1);
@@ -128,13 +140,12 @@ function renderLibrary() {
       renderLibrary();
     });
 
-    // Append book to correct shelf
+    // Append to correct shelf
     if (book.status === "want") wantShelf.appendChild(bookCard);
     else if (book.status === "reading") readingShelf.appendChild(bookCard);
     else if (book.status === "finished") finishedShelf.appendChild(bookCard);
   });
 }
-
 
 // --------------------
 // Rate Book
