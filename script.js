@@ -4,23 +4,28 @@
 let library = JSON.parse(localStorage.getItem("library")) || [];
 
 // ======= Book Constructor =======
-function Book(title, author, status = "Unread", rating = 0) {
+function Book(title, author, status = "want", rating = 0) {
   this.title = title;
   this.author = author;
   this.status = status;
   this.rating = rating;
+  this.cover = "https://via.placeholder.com/100"; // default placeholder
 }
 
 // ======= Add Book =======
 const bookForm = document.getElementById("book-form");
+const searchInput = document.getElementById("search-input");
 
 bookForm.addEventListener("submit", (e) => {
   e.preventDefault();
+
   const title = document.getElementById("title").value.trim();
   const author = document.getElementById("author").value.trim();
   const status = document.getElementById("status").value;
 
-  // Prevent duplicates
+  if (!title || !author) return;
+
+  // prevent duplicates
   if (library.some(b => b.title === title && b.author === author)) {
     alert("Book already in your library!");
     return;
@@ -29,17 +34,20 @@ bookForm.addEventListener("submit", (e) => {
   const newBook = new Book(title, author, status);
   library.push(newBook);
   localStorage.setItem("library", JSON.stringify(library));
-  renderLibrary();
+
+  // Collapse search after adding
+  searchInput.value = "";
+
+  renderLibrary(); // show full library
   bookForm.reset();
 });
 
-// ======= Search =======
-const searchInput = document.getElementById("search-input");
-
+// ======= Search Books =======
 searchInput.addEventListener("input", () => {
   const term = searchInput.value.trim().toLowerCase();
+
   if (!term) {
-    renderLibrary();
+    renderLibrary(); // show full library
   } else {
     const filtered = library.filter(book =>
       book.title.toLowerCase().includes(term) ||
@@ -50,17 +58,17 @@ searchInput.addEventListener("input", () => {
 });
 
 // ======= Render Library =======
-function renderLibrary(books = library) {
+function renderLibrary(booksToRender = library) {
   const wantShelf = document.getElementById("wantShelf");
   const readingShelf = document.getElementById("readingShelf");
   const finishedShelf = document.getElementById("finishedShelf");
 
-  // Clear all shelves
+  // Clear shelves
   wantShelf.innerHTML = "";
   readingShelf.innerHTML = "";
   finishedShelf.innerHTML = "";
 
-  books.forEach((book, index) => {
+  booksToRender.forEach((book, index) => {
     const bookCard = document.createElement("div");
     bookCard.className = "bookCard";
 
@@ -71,9 +79,9 @@ function renderLibrary(books = library) {
     }
     starsHTML += `</div>`;
 
-    // Book card innerHTML with status dropdown
+    // Book card content
     bookCard.innerHTML = `
-      <img src="${book.cover || "https://via.placeholder.com/100"}" alt="Book Cover">
+      <img src="${book.cover}" alt="Book Cover">
       <h4>${book.title}</h4>
       <p>${book.author}</p>
 
@@ -89,46 +97,4 @@ function renderLibrary(books = library) {
     `;
 
     // ======= Status Change Logic =======
-    const dropdown = bookCard.querySelector(".status-dropdown");
-    dropdown.addEventListener("change", (event) => {
-      const bookIndex = event.target.dataset.index;
-      library[bookIndex].status = event.target.value;
-      localStorage.setItem("library", JSON.stringify(library));
-      renderLibrary();
-    });
-
-    // ======= Star Rating Logic =======
-    const stars = bookCard.querySelectorAll(".star");
-
-    stars.forEach((star, i) => {
-      // Hover effect
-      star.addEventListener("mouseenter", () => {
-        stars.forEach((s, idx) => {
-          s.style.color = idx <= i ? "gold" : "grey";
-        });
-      });
-
-      star.addEventListener("mouseleave", () => {
-        stars.forEach((s, idx) => {
-          s.style.color = idx < book.rating ? "gold" : "grey";
-        });
-      });
-
-      // Click to set rating
-      star.addEventListener("click", () => {
-        library[index].rating = i + 1;
-        localStorage.setItem("library", JSON.stringify(library));
-        renderLibrary();
-      });
-    });
-
-    // Set initial star colors
-    stars.forEach((s, idx) => {
-      s.style.color = idx < book.rating ? "gold" : "grey";
-    });
-
-    // ======= Remove Button =======
-    const removeBtn = bookCard.querySelector(".remove-btn");
-    removeBtn.addEventListener("click", () => {
-      library.splice(index, 1);
-      localStorage.setItem("library", JSON.stringify(
+    const dropdown = bookCard.querySelector(
