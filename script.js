@@ -40,20 +40,26 @@ bookForm.addEventListener("submit", (e) => {
   bookForm.reset();
 });
 
-// ===== Search Function =====
+// ===== Perform Search =====
 function performSearch() {
   const term = searchInput.value.trim().toLowerCase();
-  if (!term) renderLibrary();
-  else {
-    const filtered = library.filter(book =>
-      book.title.toLowerCase().includes(term) ||
-      book.author.toLowerCase().includes(term)
-    );
-    renderLibrary(filtered);
+
+  // If search is empty, render full library
+  if (!term) {
+    renderLibrary();
+    return;
   }
+
+  // Filtered library
+  const filtered = library.filter(book =>
+    book.title.toLowerCase().includes(term) ||
+    book.author.toLowerCase().includes(term)
+  );
+
+  renderLibrary(filtered);
 }
 
-// Search button click
+// Attach search button click event
 searchButton.addEventListener("click", performSearch);
 
 // ===== Render Library =====
@@ -90,7 +96,7 @@ function renderLibrary(booksToRender = library) {
       <button class="remove-btn">Remove</button>
     `;
 
-    // Status dropdown
+    // ===== Status Dropdown =====
     const dropdown = bookCard.querySelector(".status-dropdown");
     dropdown.addEventListener("change", (event) => {
       const bookIndex = event.target.dataset.index;
@@ -99,7 +105,7 @@ function renderLibrary(booksToRender = library) {
       renderLibrary();
     });
 
-    // Star Ratings
+    // ===== Star Ratings =====
     const stars = bookCard.querySelectorAll(".star");
     stars.forEach((star, i) => {
       star.addEventListener("mouseenter", () => {
@@ -116,7 +122,7 @@ function renderLibrary(booksToRender = library) {
     });
     stars.forEach((s, idx) => (s.style.color = idx < book.rating ? "gold" : "grey"));
 
-    // Remove Button
+    // ===== Remove Button =====
     const removeBtn = bookCard.querySelector(".remove-btn");
     removeBtn.addEventListener("click", () => {
       library.splice(index, 1);
@@ -124,12 +130,5 @@ function renderLibrary(booksToRender = library) {
       renderLibrary();
     });
 
-    // Append to correct shelf
-    if (book.status === "want") wantShelf.appendChild(bookCard);
-    else if (book.status === "reading") readingShelf.appendChild(bookCard);
-    else if (book.status === "finished") finishedShelf.appendChild(bookCard);
-  });
-}
-
-// ===== Initial Render =====
-renderLibrary();
+    // ===== Append to Correct Shelf =====
+    if (book.status ===
