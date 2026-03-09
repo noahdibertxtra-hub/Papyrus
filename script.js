@@ -48,10 +48,6 @@ function displayResults(books) {
   });
 }
 
-   
-// --------------------
-// Add Book to Library
-// --------------------
 function addBook(title, author, cover) {
   const status = document.getElementById("statusSelect").value;
 
@@ -65,6 +61,10 @@ function addBook(title, author, cover) {
 
   library.push(book);
   localStorage.setItem("library", JSON.stringify(library));
+
+  // Collapse search results
+  document.getElementById("results").innerHTML = "";
+
   renderLibrary();
 }
 
