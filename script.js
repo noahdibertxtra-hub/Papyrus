@@ -13,6 +13,7 @@ function Book(title, author, status = "want", rating = 0) {
 // ======= Add Book =======
 const bookForm = document.getElementById("book-form");
 const searchInput = document.getElementById("search-input");
+const searchButton = document.getElementById("search-button");
 
 bookForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -23,7 +24,6 @@ bookForm.addEventListener("submit", (e) => {
 
   if (!title || !author) return;
 
-  // prevent duplicates
   if (library.some(b => b.title === title && b.author === author)) {
     alert("Book already in your library!");
     return;
@@ -33,15 +33,15 @@ bookForm.addEventListener("submit", (e) => {
   library.push(newBook);
   localStorage.setItem("library", JSON.stringify(library));
 
-  // Collapse search results after adding
+  // Collapse search after adding
   searchInput.value = "";
 
   renderLibrary();
   bookForm.reset();
 });
 
-// ======= Search Books =======
-searchInput.addEventListener("input", () => {
+// ======= Search Function =======
+function performSearch() {
   const term = searchInput.value.trim().toLowerCase();
   if (!term) renderLibrary();
   else {
@@ -51,6 +51,14 @@ searchInput.addEventListener("input", () => {
     );
     renderLibrary(filtered);
   }
+}
+
+// Trigger search on search button click
+searchButton.addEventListener("click", performSearch);
+
+// Trigger search on Enter key
+searchInput.addEventListener("keyup", (e) => {
+  if (e.key === "Enter") performSearch();
 });
 
 // ======= Render Library =======
@@ -88,7 +96,7 @@ function renderLibrary(booksToRender = library) {
       <button class="remove-btn">Remove</button>
     `;
 
-    // ======= Status Dropdown =======
+    // Status Dropdown
     const dropdown = bookCard.querySelector(".status-dropdown");
     dropdown.addEventListener("change", (event) => {
       const bookIndex = event.target.dataset.index;
@@ -97,7 +105,7 @@ function renderLibrary(booksToRender = library) {
       renderLibrary();
     });
 
-    // ======= Star Ratings =======
+    // Star Ratings
     const stars = bookCard.querySelectorAll(".star");
     stars.forEach((star, i) => {
       star.addEventListener("mouseenter", () => {
@@ -114,7 +122,7 @@ function renderLibrary(booksToRender = library) {
     });
     stars.forEach((s, idx) => (s.style.color = idx < book.rating ? "gold" : "grey"));
 
-    // ======= Remove Button =======
+    // Remove Button
     const removeBtn = bookCard.querySelector(".remove-btn");
     removeBtn.addEventListener("click", () => {
       library.splice(index, 1);
@@ -122,7 +130,7 @@ function renderLibrary(booksToRender = library) {
       renderLibrary();
     });
 
-    // ======= Append to Correct Shelf =======
+    // Append to Correct Shelf
     if (book.status === "want") wantShelf.appendChild(bookCard);
     else if (book.status === "reading") readingShelf.appendChild(bookCard);
     else if (book.status === "finished") finishedShelf.appendChild(bookCard);
