@@ -1,3 +1,4 @@
+/* ===== Global ===== */
 body {
   font-family: Arial, sans-serif;
   margin: 20px;
@@ -14,114 +15,51 @@ section {
   margin-bottom: 20px;
 }
 
-/* Search */
+/* ===== Search Section ===== */
+#search-section {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
 #search-input {
-  width: 100%;
+  flex: 1;
   padding: 8px;
   font-size: 16px;
   box-sizing: border-box;
-  margin-bottom: 10px;
 }
 
-/* Add book form */
+#search-button {
+  padding: 8px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  transition: background-color 0.2s;
+}
+
+#search-button:hover {
+  background-color: #45a049;
+}
+
+/* ===== Add Book Form ===== */
+#book-form {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
 #book-form input,
 #book-form select {
   padding: 5px;
-  margin-right: 5px;
+  font-size: 14px;
 }
 
 #book-form button {
   padding: 5px 10px;
-  cursor: pointer;
-}
-
-/* Shelves layout: three in a row */
-.shelves-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.shelf-container {
-  flex: 1;
-}
-
-.shelf-container h2 {
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.shelf {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-/* Book cards */
-.bookCard {
-  border: 1px solid #ccc;
-  background: #fff;
-  padding: 10px;
-  width: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-  border-radius: 5px;
-}
-
-.bookCard img {
-  width: 100px;
-  height: 150px;
-  object-fit: cover;
-  margin-bottom: 5px;
-}
-
-.bookCard h4 {
-  margin: 5px 0;
-  font-size: 16px;
-  text-align: center;
-}
-
-.bookCard p {
-  font-size: 14px;
-  text-align: center;
-  margin: 2px 0;
-}
-
-/* Status dropdown */
-.status-dropdown {
-  margin: 5px 0;
-  padding: 3px;
-  width: 100%;
-}
-
-/* Stars */
-.stars {
-  display: flex;
-  justify-content: center;
-  margin: 5px 0;
-}
-
-.star {
-  cursor: pointer;
-  font-size: 18px;
-  color: grey;
-  transition: color 0.2s;
-}
-
-/* Remove button */
-.remove-btn {
-  background: #ff4d4d;
-  color: #fff;
-  border: none;
-  padding: 5px 8px;
-  cursor: pointer;
-  border-radius: 3px;
-  font-size: 14px;
-  margin-top: 5px;
-}
-
-.remove-btn:hover {
-  background: #e60000;
-}
+  cursor: pointer
