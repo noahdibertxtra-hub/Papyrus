@@ -187,3 +187,13 @@ function addBook(title, author, cover) {
 
   });
 }
+addBook();
+renderLibrary();
+
+function renderLibrary() {
+  // code
+}
+
+function addBook() {
+  // code
+}
