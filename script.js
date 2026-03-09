@@ -91,12 +91,21 @@ function renderLibrary() {
 
     // Set innerHTML for book
     bookCard.innerHTML = `
-      <img src="${book.cover}">
-      <h4>${book.title}</h4>
-      <p>${book.author}</p>
-      ${starsHTML}
-      <button class="remove-btn">Remove</button>
-    `;
+  <img src="${book.cover}">
+  <h4>${book.title}</h4>
+  <p>${book.author}</p>
+
+  <label>Status:</label>
+  <select class="status-select">
+    <option value="want" ${book.status === "want" ? "selected" : ""}>Want to Read</option>
+    <option value="reading" ${book.status === "reading" ? "selected" : ""}>Currently Reading</option>
+    <option value="finished" ${book.status === "finished" ? "selected" : ""}>Finished</option>
+  </select>
+
+  ${starsHTML}
+
+  <button class="remove-btn">Remove</button>
+`;
 
     // Select stars in this card
     const stars = bookCard.querySelectorAll(".star");
