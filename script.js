@@ -135,3 +135,61 @@ function addFromSearch(title,author,cover){
 
 // Run on page load
 displayBooks();
+
+let library = JSON.parse(localStorage.getItem("library")) || [];
+function saveLibrary() {
+  localStorage.setItem("library", JSON.stringify(library));
+}
+function addBook(title, author, cover) {
+
+  const status = document.getElementById("statusSelect").value;
+
+  const book = {
+    title: title,
+    author: author,
+    cover: cover,
+    rating: 0,
+    status: status
+  };
+
+  library.push(book);
+
+  saveLibrary();
+  renderLibrary();
+}
+function renderLibrary() {
+
+  const wantShelf = document.getElementById("wantShelf");
+  const readingShelf = document.getElementById("readingShelf");
+  const finishedShelf = document.getElementById("finishedShelf");
+
+  wantShelf.innerHTML = "";
+  readingShelf.innerHTML = "";
+  finishedShelf.innerHTML = "";
+
+  library.forEach((book, index) => {
+
+    const bookCard = document.createElement("div");
+    bookCard.classList.add("bookCard");
+
+    bookCard.innerHTML = `
+      <img src="${book.cover}" width="80">
+      <h4>${book.title}</h4>
+      <p>${book.author}</p>
+    `;
+
+    if (book.status === "want") {
+      wantShelf.appendChild(bookCard);
+    }
+
+    if (book.status === "reading") {
+      readingShelf.appendChild(bookCard);
+    }
+
+    if (book.status === "finished") {
+      finishedShelf.appendChild(bookCard);
+    }
+
+  });
+}
+renderLibrary();
