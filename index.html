@@ -22,24 +22,30 @@
       <input type="text" id="title" placeholder="Title" required>
       <input type="text" id="author" placeholder="Author" required>
       <select id="status">
-        <option value="want">Want to Read</option>
-        <option value="reading">Currently Reading</option>
+        <option value="want">Want To Read</option>
+        <option value="reading">Reading</option>
         <option value="finished">Finished</option>
       </select>
       <button type="submit">Add Book</button>
     </form>
   </section>
 
-  <!-- Shelves -->
-  <section id="library-section">
-    <h2>Want to Read</h2>
-    <div id="wantShelf" class="shelf"></div>
+  <!-- Shelves Container -->
+  <section id="library-section" class="shelves-container">
+    <div class="shelf-container">
+      <h2>Want To Read</h2>
+      <div id="wantShelf" class="shelf"></div>
+    </div>
 
-    <h2>Currently Reading</h2>
-    <div id="readingShelf" class="shelf"></div>
+    <div class="shelf-container">
+      <h2>Reading</h2>
+      <div id="readingShelf" class="shelf"></div>
+    </div>
 
-    <h2>Finished</h2>
-    <div id="finishedShelf" class="shelf"></div>
+    <div class="shelf-container">
+      <h2>Finished</h2>
+      <div id="finishedShelf" class="shelf"></div>
+    </div>
   </section>
 
   <script src="script.js"></script>
