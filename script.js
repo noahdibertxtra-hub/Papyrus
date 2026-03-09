@@ -1,16 +1,16 @@
-// ======= Papyrus Library =======
+// ===== Papyrus Library =====
 let library = JSON.parse(localStorage.getItem("library")) || [];
 
-// ======= Book Constructor =======
+// ===== Book Constructor =====
 function Book(title, author, status = "want", rating = 0) {
   this.title = title;
   this.author = author;
   this.status = status;
   this.rating = rating;
-  this.cover = "https://via.placeholder.com/100"; // default cover
+  this.cover = "https://via.placeholder.com/100";
 }
 
-// ======= Add Book =======
+// ===== Add Book =====
 const bookForm = document.getElementById("book-form");
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
@@ -40,7 +40,7 @@ bookForm.addEventListener("submit", (e) => {
   bookForm.reset();
 });
 
-// ======= Search Function =======
+// ===== Search Function =====
 function performSearch() {
   const term = searchInput.value.trim().toLowerCase();
   if (!term) renderLibrary();
@@ -53,15 +53,10 @@ function performSearch() {
   }
 }
 
-// Trigger search on search button click
+// Search button click
 searchButton.addEventListener("click", performSearch);
 
-// Trigger search on Enter key
-searchInput.addEventListener("keyup", (e) => {
-  if (e.key === "Enter") performSearch();
-});
-
-// ======= Render Library =======
+// ===== Render Library =====
 function renderLibrary(booksToRender = library) {
   const wantShelf = document.getElementById("wantShelf");
   const readingShelf = document.getElementById("readingShelf");
@@ -75,7 +70,6 @@ function renderLibrary(booksToRender = library) {
     const bookCard = document.createElement("div");
     bookCard.className = "bookCard";
 
-    // Star HTML
     let starsHTML = `<div class="stars">`;
     for (let i = 1; i <= 5; i++) starsHTML += `<span class="star">&#9733;</span>`;
     starsHTML += `</div>`;
@@ -96,7 +90,7 @@ function renderLibrary(booksToRender = library) {
       <button class="remove-btn">Remove</button>
     `;
 
-    // Status Dropdown
+    // Status dropdown
     const dropdown = bookCard.querySelector(".status-dropdown");
     dropdown.addEventListener("change", (event) => {
       const bookIndex = event.target.dataset.index;
@@ -130,12 +124,12 @@ function renderLibrary(booksToRender = library) {
       renderLibrary();
     });
 
-    // Append to Correct Shelf
+    // Append to correct shelf
     if (book.status === "want") wantShelf.appendChild(bookCard);
     else if (book.status === "reading") readingShelf.appendChild(bookCard);
     else if (book.status === "finished") finishedShelf.appendChild(bookCard);
   });
 }
 
-// ======= Initial Render =======
+// ===== Initial Render =====
 renderLibrary();
