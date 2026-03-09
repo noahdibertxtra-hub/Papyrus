@@ -154,10 +154,7 @@ function addBook(title, author, cover) {
 
   library.push(book);
 
-  saveLibrary();
-  renderLibrary();
-}
-function renderLibrary() {
+ function renderLibrary() {
 
   const wantShelf = document.getElementById("wantShelf");
   const readingShelf = document.getElementById("readingShelf");
@@ -167,10 +164,10 @@ function renderLibrary() {
   readingShelf.innerHTML = "";
   finishedShelf.innerHTML = "";
 
-  library.forEach((book, index) => {
+  library.forEach((book) => {
 
     const bookCard = document.createElement("div");
-    bookCard.classList.add("bookCard");
+    bookCard.className = "bookCard";
 
     bookCard.innerHTML = `
       <img src="${book.cover}" width="80">
@@ -180,16 +177,13 @@ function renderLibrary() {
 
     if (book.status === "want") {
       wantShelf.appendChild(bookCard);
-    }
-
-    if (book.status === "reading") {
+    } 
+    else if (book.status === "reading") {
       readingShelf.appendChild(bookCard);
-    }
-
-    if (book.status === "finished") {
+    } 
+    else if (book.status === "finished") {
       finishedShelf.appendChild(bookCard);
     }
 
   });
 }
-renderLibrary();
