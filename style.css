@@ -51,9 +51,6 @@ input, select, button {
   font-size: 18px;
   transition: color 0.2s;
 }
-.star:hover {
-  color: gold;
-}
 
 .remove-btn {
   margin-top: 5px;
