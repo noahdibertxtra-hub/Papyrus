@@ -14,19 +14,18 @@ section {
   margin-bottom: 20px;
 }
 
-/* ===== Search Section ===== */
+/* Search Section */
 #search-section {
   display: flex;
   justify-content: center;
   gap: 5px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 #search-input {
   flex: 0 0 250px;
   padding: 8px;
   font-size: 16px;
-  box-sizing: border-box;
 }
 
 #search-button {
@@ -37,14 +36,22 @@ section {
   color: white;
   border: none;
   border-radius: 3px;
-  transition: background-color 0.2s;
 }
 
 #search-button:hover {
   background-color: #45a049;
 }
 
-/* ===== Add Book Form ===== */
+/* Search Results */
+#search-results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* Book Form */
 #book-form {
   display: flex;
   justify-content: center;
@@ -64,7 +71,7 @@ section {
   cursor: pointer;
 }
 
-/* ===== Shelves Container ===== */
+/* Shelves */
 .shelves-container {
   display: flex;
   justify-content: space-between;
@@ -86,7 +93,7 @@ section {
   gap: 10px;
 }
 
-/* ===== Book Cards ===== */
+/* Book Cards */
 .bookCard {
   border: 1px solid #ccc;
   background: #fff;
@@ -118,14 +125,14 @@ section {
   margin: 2px 0;
 }
 
-/* ===== Status Dropdown ===== */
+/* Status Dropdown */
 .status-dropdown {
   margin: 5px 0;
   padding: 3px;
   width: 100%;
 }
 
-/* ===== Stars ===== */
+/* Stars */
 .stars {
   display: flex;
   justify-content: center;
@@ -139,7 +146,7 @@ section {
   transition: color 0.2s;
 }
 
-/* ===== Remove Button ===== */
+/* Remove Button */
 .remove-btn {
   background: #ff4d4d;
   color: #fff;
@@ -149,14 +156,13 @@ section {
   border-radius: 3px;
   font-size: 14px;
   margin-top: 5px;
-  transition: background 0.2s;
 }
 
 .remove-btn:hover {
   background: #e60000;
 }
 
-/* ===== Responsive ===== */
+/* Responsive */
 @media (max-width: 900px) {
   .shelves-container {
     flex-direction: column;
