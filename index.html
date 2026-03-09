@@ -2,49 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Papyrus</title>
+  <title>Papyrus Library</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h1>Papyrus</h1>
+  <header>
+    <h1>Papyrus Library</h1>
+  </header>
 
-  <!-- Search Section -->
-  <div class="search">
-    <input type="text" id="searchInput" placeholder="Search books...">
-    <button onclick="searchBooks()">Search</button>
-    <select id="statusSelect">
-      <option value="want">Want to Read</option>
-      <option value="reading">Currently Reading</option>
-      <option value="finished">Finished</option>
-    </select>
-  </div>
+  <!-- Search -->
+  <section id="search-section">
+    <input type="text" id="search-input" placeholder="Search books by title or author...">
+  </section>
 
-  <!-- Search Results -->
-  <h2>Search Results</h2>
-  <div id="results"></div>
+  <!-- Add Book Form -->
+  <section id="add-book-section">
+    <form id="book-form">
+      <input type="text" id="title" placeholder="Title" required>
+      <input type="text" id="author" placeholder="Author" required>
+      <select id="status">
+        <option value="want">Want to Read</option>
+        <option value="reading">Currently Reading</option>
+        <option value="finished">Finished</option>
+      </select>
+      <button type="submit">Add Book</button>
+    </form>
+  </section>
 
-  <!-- Library -->
-  <h2>My Library</h2>
-  <div class="library">
+  <!-- Shelves -->
+  <section id="library-section">
+    <h2>Want to Read</h2>
+    <div id="wantShelf" class="shelf"></div>
 
-    <div class="shelf">
-      <h3>Want to Read</h3>
-      <div id="wantShelf"></div>
-    </div>
+    <h2>Currently Reading</h2>
+    <div id="readingShelf" class="shelf"></div>
 
-    <div class="shelf">
-      <h3>Currently Reading</h3>
-      <div id="readingShelf"></div>
-    </div>
-
-    <div class="shelf">
-      <h3>Finished</h3>
-      <div id="finishedShelf"></div>
-    </div>
-
-  <div id="library-container"></div>
-
-  <script src="script.js"></script>
-</body>
-</html>
+    <h2>Finished</h2>
+    <div id="finishedShelf" class="shel
