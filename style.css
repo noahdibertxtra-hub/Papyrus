@@ -1,63 +1,113 @@
+/* ===== General ===== */
 body {
   font-family: Arial, sans-serif;
   margin: 20px;
+  background: #f5f5f5;
+  color: #333;
 }
 
-h1, h2, h3 {
-  text-align: center;
-}
-
-.search {
+header h1 {
   text-align: center;
   margin-bottom: 20px;
 }
 
-input, select, button {
-  margin: 5px;
-  padding: 5px 10px;
+section {
+  margin-bottom: 20px;
 }
 
-.library {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.shelf {
-  width: 30%;
-}
-
-.bookCard {
-  background: #f4f4f4;
-  padding: 10px;
+/* ===== Search & Form ===== */
+#search-input {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
   margin-bottom: 10px;
-  text-align: center;
-  border-radius: 6px;
-  position: relative;
+}
+
+#book-form input,
+#book-form select {
+  padding: 5px;
+  margin-right: 5px;
+}
+
+#book-form button {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* ===== Shelves ===== */
+.shelf {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* ===== Book Cards ===== */
+.bookCard {
+  border: 1px solid #ccc;
+  background: #fff;
+  padding: 10px;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+  border-radius: 5px;
 }
 
 .bookCard img {
-  max-width: 80px;
+  width: 100px;
+  height: 150px;
+  object-fit: cover;
   margin-bottom: 5px;
 }
 
+.bookCard h4 {
+  margin: 5px 0;
+  font-size: 16px;
+  text-align: center;
+}
+
+.bookCard p {
+  font-size: 14px;
+  text-align: center;
+  margin: 2px 0;
+}
+
+/* ===== Status Dropdown ===== */
+.status-dropdown {
+  margin: 5px 0;
+  padding: 3px;
+  width: 100%;
+}
+
+/* ===== Stars ===== */
 .stars {
-  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  margin: 5px 0;
 }
 
 .star {
   cursor: pointer;
   font-size: 18px;
+  color: grey;
   transition: color 0.2s;
 }
 
+/* ===== Remove Button ===== */
 .remove-btn {
-  margin-top: 5px;
-  background: red;
-  color: white;
+  background: #ff4d4d;
+  color: #fff;
   border: none;
-  padding: 3px 6px;
-  border-radius: 3px;
+  padding: 5px 8px;
   cursor: pointer;
+  border-radius: 3px;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.remove-btn:hover {
+  background: #e60000;
 }
