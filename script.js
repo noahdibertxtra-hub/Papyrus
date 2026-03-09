@@ -68,9 +68,6 @@ function addBook(title, author, cover) {
   renderLibrary();
 }
 
-// --------------------
-// Render Library
-// --------------------
 function renderLibrary() {
   const wantShelf = document.getElementById("wantShelf");
   const readingShelf = document.getElementById("readingShelf");
