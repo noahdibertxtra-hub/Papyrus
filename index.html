@@ -1,70 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Papyrus</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Papyrus</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<h1>Papyrus</h1>
+  <h1>Papyrus</h1>
 
-<!-- SEARCH SECTION -->
-<h2>Search Books</h2>
-<input id="searchInput" placeholder="Search for a book">
-<button onclick="searchBooks()">Search</button>
-<div id="searchResults"></div>
-
-<!-- ADD BOOK FORM -->
-<h2>Add Book Manually</h2>
-<div class="form">
-<input id="title" placeholder="Book title">
-<input id="author" placeholder="Author">
-<select id="status">
-<option value="reading">Reading</option>
-<option value="finished">Finished</option>
-<option value="want">Want to Read</option>
-</select>
-<button onclick="addBook()">Add Book</button>
-</div>
-
-<!-- STATS -->
-<h2>Reading Stats</h2>
-<div id="stats"></div>
-
-<!-- LIBRARY -->
-<h2>Your Library</h2>
-<div id="bookList"></div>
-
-<h2>My Library</h2>
-
-<div class="library">
-
-  <div class="shelf">
-    <h3>Want to Read</h3>
-    <div id="wantShelf"></div>
+  <!-- Search Section -->
+  <div class="search">
+    <input type="text" id="searchInput" placeholder="Search books...">
+    <button onclick="searchBooks()">Search</button>
+    <select id="statusSelect">
+      <option value="want">Want to Read</option>
+      <option value="reading">Currently Reading</option>
+      <option value="finished">Finished</option>
+    </select>
   </div>
 
-  <div class="shelf">
-    <h3>Currently Reading</h3>
-    <div id="readingShelf"></div>
+  <!-- Search Results -->
+  <h2>Search Results</h2>
+  <div id="results"></div>
+
+  <!-- Library -->
+  <h2>My Library</h2>
+  <div class="library">
+
+    <div class="shelf">
+      <h3>Want to Read</h3>
+      <div id="wantShelf"></div>
+    </div>
+
+    <div class="shelf">
+      <h3>Currently Reading</h3>
+      <div id="readingShelf"></div>
+    </div>
+
+    <div class="shelf">
+      <h3>Finished</h3>
+      <div id="finishedShelf"></div>
+    </div>
+
   </div>
 
-  <div class="shelf">
-    <h3>Finished</h3>
-    <div id="finishedShelf"></div>
-  </div>
-
-</div>
-
-<select id="statusSelect">
-  <option value="want">Want to Read</option>
-  <option value="reading">Currently Reading</option>
-  <option value="finished">Finished</option>
-</select>
-
-  
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
