@@ -84,10 +84,14 @@ function renderLibrary() {
     const bookCard = document.createElement("div");
     bookCard.className = "bookCard";
 
-    // Stars
+    // Build stars
     let starsHTML = `<div class="stars">`;
     for (let i = 1; i <= 5; i++) {
-      starsHTML += `<span class="star" onclick="rateBook(${index}, ${i})">&#9733;</span>`;
+      if (i <= book.rating) {
+        starsHTML += `<span class="star" data-index="${i}" style="color: gold;">&#9733;</span>`;
+      } else {
+        starsHTML += `<span class="star" data-index="${i}" style="color: grey;">&#9733;</span>`;
+      }
     }
     starsHTML += `</div>`;
 
@@ -96,14 +100,35 @@ function renderLibrary() {
       <h4>${book.title}</h4>
       <p>${book.author}</p>
       ${starsHTML}
-      <button class="remove-btn" onclick="removeBook(${index})">Remove</button>
+      <button class="remove-btn">Remove</button>
     `;
 
+    // Add star click functionality
+    const stars = bookCard.querySelectorAll(".star");
+    stars.forEach(star => {
+      star.addEventListener("click", () => {
+        const rating = parseInt(star.getAttribute("data-index"));
+        library[index].rating = rating;
+        localStorage.setItem("library", JSON.stringify(library));
+        renderLibrary();
+      });
+    });
+
+    // Add remove button functionality
+    const removeBtn = bookCard.querySelector(".remove-btn");
+    removeBtn.addEventListener("click", () => {
+      library.splice(index, 1);
+      localStorage.setItem("library", JSON.stringify(library));
+      renderLibrary();
+    });
+
+    // Append to correct shelf
     if (book.status === "want") wantShelf.appendChild(bookCard);
     else if (book.status === "reading") readingShelf.appendChild(bookCard);
     else if (book.status === "finished") finishedShelf.appendChild(bookCard);
   });
 }
+
 
 // --------------------
 // Rate Book
