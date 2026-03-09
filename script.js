@@ -1,81 +1,56 @@
-// --------------------
-// Initialize Library
-// --------------------
+// ======= Papyrus Library =======
+
+// Load library from localStorage or start with empty array
 let library = JSON.parse(localStorage.getItem("library")) || [];
-renderLibrary();
 
-// --------------------
-// Search Books (Open Library API)
-// --------------------
-async function searchBooks() {
-  const query = document.getElementById("searchInput").value;
-  if (!query) return alert("Enter a search term!");
-
-  const res = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=10`);
-  const data = await res.json();
-
-  displayResults(data.docs);
+// ======= Book Constructor =======
+function Book(title, author, status = "Unread", rating = 0) {
+  this.title = title;
+  this.author = author;
+  this.status = status;
+  this.rating = rating;
 }
 
-function displayResults(books) {
-  const resultsDiv = document.getElementById("results");
-  resultsDiv.innerHTML = "";
+// ======= Add Book =======
+const bookForm = document.getElementById("book-form");
 
-  books.forEach((book) => {
-    const title = book.title;
-    const author = book.author_name ? book.author_name[0] : "Unknown";
-    const cover = book.cover_i
-      ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
-      : "https://via.placeholder.com/80x120?text=No+Cover";
+bookForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const title = document.getElementById("title").value.trim();
+  const author = document.getElementById("author").value.trim();
+  const status = document.getElementById("status").value;
 
-    const bookCard = document.createElement("div");
-    bookCard.className = "bookCard";
+  // Prevent duplicates
+  if (library.some(b => b.title === title && b.author === author)) {
+    alert("Book already in your library!");
+    return;
+  }
 
-    bookCard.innerHTML = `
-      <img src="${cover}">
-      <h4>${title}</h4>
-      <p>${author}</p>
-      <button class="add-btn">Add Book</button>
-    `;
-const statusSelect = bookCard.querySelector(".status-select");
-
-statusSelect.addEventListener("change", () => {
-  library[index].status = statusSelect.value;
+  const newBook = new Book(title, author, status);
+  library.push(newBook);
   localStorage.setItem("library", JSON.stringify(library));
   renderLibrary();
+  bookForm.reset();
 });
 
-    resultsDiv.appendChild(bookCard);
+// ======= Search =======
+const searchInput = document.getElementById("search-input");
 
-    // Add click listener safely
-    const addBtn = bookCard.querySelector(".add-btn");
-    addBtn.addEventListener("click", () => {
-      addBook(title, author, cover);
-    });
-  });
-}
+searchInput.addEventListener("input", () => {
+  const term = searchInput.value.trim().toLowerCase();
+  if (!term) {
+    renderLibrary();
+  } else {
+    const filtered = library.filter(book =>
+      book.title.toLowerCase().includes(term) ||
+      book.author.toLowerCase().includes(term)
+    );
+    renderLibrary(filtered);
+  }
+});
 
-function addBook(title, author, cover) {
-  const status = document.getElementById("statusSelect").value;
-
-  const book = {
-    title: title,
-    author: author,
-    cover: cover,
-    rating: 0,
-    status: status
-  };
-
-  library.push(book);
-  localStorage.setItem("library", JSON.stringify(library));
-
-  // Collapse search results
-  document.getElementById("results").innerHTML = "";
-
-  renderLibrary();
-}
-
-function renderLibrary() {
+// ======= Render Library =======
+function renderLibrary(books = library) {
   const wantShelf = document.getElementById("wantShelf");
   const readingShelf = document.getElementById("readingShelf");
   const finishedShelf = document.getElementById("finishedShelf");
@@ -85,98 +60,75 @@ function renderLibrary() {
   readingShelf.innerHTML = "";
   finishedShelf.innerHTML = "";
 
-  library.forEach((book, index) => {
+  books.forEach((book, index) => {
     const bookCard = document.createElement("div");
     bookCard.className = "bookCard";
 
-    // Build stars
+    // Star HTML
     let starsHTML = `<div class="stars">`;
     for (let i = 1; i <= 5; i++) {
       starsHTML += `<span class="star">&#9733;</span>`;
     }
     starsHTML += `</div>`;
 
-    // Set innerHTML for book
+    // Book card innerHTML with status dropdown
     bookCard.innerHTML = `
-  <img src="${book.cover}">
-  <h4>${book.title}</h4>
-  <p>${book.author}</p>
+      <img src="${book.cover || "https://via.placeholder.com/100"}" alt="Book Cover">
+      <h4>${book.title}</h4>
+      <p>${book.author}</p>
 
-  <label>Status:</label>
-  <select class="status-select">
-    <option value="want" ${book.status === "want" ? "selected" : ""}>Want to Read</option>
-    <option value="reading" ${book.status === "reading" ? "selected" : ""}>Currently Reading</option>
-    <option value="finished" ${book.status === "finished" ? "selected" : ""}>Finished</option>
-  </select>
+      <label>Status:</label>
+      <select class="status-dropdown" data-index="${index}">
+        <option value="want" ${book.status === "want" ? "selected" : ""}>Want to Read</option>
+        <option value="reading" ${book.status === "reading" ? "selected" : ""}>Currently Reading</option>
+        <option value="finished" ${book.status === "finished" ? "selected" : ""}>Finished</option>
+      </select>
 
-  ${starsHTML}
+      ${starsHTML}
+      <button class="remove-btn">Remove</button>
+    `;
 
-  <button class="remove-btn">Remove</button>
-`;
+    // ======= Status Change Logic =======
+    const dropdown = bookCard.querySelector(".status-dropdown");
+    dropdown.addEventListener("change", (event) => {
+      const bookIndex = event.target.dataset.index;
+      library[bookIndex].status = event.target.value;
+      localStorage.setItem("library", JSON.stringify(library));
+      renderLibrary();
+    });
 
-    // Select stars in this card
+    // ======= Star Rating Logic =======
     const stars = bookCard.querySelectorAll(".star");
 
-    // Add hover + click behavior
     stars.forEach((star, i) => {
-
-      // Hover: temporarily show highlight up to this star
+      // Hover effect
       star.addEventListener("mouseenter", () => {
         stars.forEach((s, idx) => {
           s.style.color = idx <= i ? "gold" : "grey";
         });
       });
 
-      // Hover out: restore saved rating
       star.addEventListener("mouseleave", () => {
         stars.forEach((s, idx) => {
           s.style.color = idx < book.rating ? "gold" : "grey";
         });
       });
 
-      // Click: set rating
+      // Click to set rating
       star.addEventListener("click", () => {
         library[index].rating = i + 1;
         localStorage.setItem("library", JSON.stringify(library));
-        renderLibrary(); // Re-render to update permanent color
+        renderLibrary();
       });
-
     });
 
-    // Initialize star colors based on current rating
+    // Set initial star colors
     stars.forEach((s, idx) => {
       s.style.color = idx < book.rating ? "gold" : "grey";
     });
 
-    // Remove button functionality
+    // ======= Remove Button =======
     const removeBtn = bookCard.querySelector(".remove-btn");
     removeBtn.addEventListener("click", () => {
       library.splice(index, 1);
-      localStorage.setItem("library", JSON.stringify(library));
-      renderLibrary();
-    });
-
-    // Append to correct shelf
-    if (book.status === "want") wantShelf.appendChild(bookCard);
-    else if (book.status === "reading") readingShelf.appendChild(bookCard);
-    else if (book.status === "finished") finishedShelf.appendChild(bookCard);
-  });
-}
-
-// --------------------
-// Rate Book
-// --------------------
-function rateBook(index, rating) {
-  library[index].rating = rating;
-  localStorage.setItem("library", JSON.stringify(library));
-  renderLibrary();
-}
-
-// --------------------
-// Remove Book
-// --------------------
-function removeBook(index) {
-  library.splice(index, 1);
-  localStorage.setItem("library", JSON.stringify(library));
-  renderLibrary();
-}
+      localStorage.setItem("library", JSON.stringify(
