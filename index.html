@@ -7,32 +7,51 @@
 </head>
 <body>
 
-  <header>
-    <h1>Papyrus Library</h1>
-  </header>
+<header>
+  <h1>Papyrus Library</h1>
+</header>
 
-  <!-- Search Section -->
-  <section id="search-section">
-    <input type="text" id="search-input" placeholder="Search books..." maxlength="50">
-    <button id="search-button">Search</button>
-  </section>
+<!-- Search Section -->
+<section id="search-section">
+  <input type="text" id="search-input" placeholder="Search books..." maxlength="50">
+  <button id="search-button">Search</button>
+</section>
 
-  <!-- Add Book Form -->
-  <section id="add-book-section">
-    <form id="book-form">
-      <input type="text" id="title" placeholder="Title" required>
-      <input type="text" id="author" placeholder="Author" required>
-      <select id="status">
-        <option value="want">Want To Read</option>
-        <option value="reading">Reading</option>
-        <option value="finished">Finished</option>
-      </select>
-      <button type="submit">Add Book</button>
-    </form>
-  </section>
+<!-- Search Results -->
+<section id="search-results"></section>
 
-  <!-- Shelves Container -->
-  <section id="library-section" class="shelves-container">
-    <div class="shelf-container">
-      <h2>Want To Read</h2>
-      <
+<!-- Add Book Form -->
+<section id="add-book-section">
+  <form id="book-form">
+    <input type="text" id="title" placeholder="Title" required>
+    <input type="text" id="author" placeholder="Author" required>
+    <select id="status">
+      <option value="want">Want To Read</option>
+      <option value="reading">Reading</option>
+      <option value="finished">Finished</option>
+    </select>
+    <button type="submit">Add Book</button>
+  </form>
+</section>
+
+<!-- Shelves Container -->
+<section id="library-section" class="shelves-container">
+  <div class="shelf-container">
+    <h2>Want To Read</h2>
+    <div id="wantShelf" class="shelf"></div>
+  </div>
+
+  <div class="shelf-container">
+    <h2>Reading</h2>
+    <div id="readingShelf" class="shelf"></div>
+  </div>
+
+  <div class="shelf-container">
+    <h2>Finished</h2>
+    <div id="finishedShelf" class="shelf"></div>
+  </div>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
