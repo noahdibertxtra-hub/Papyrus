@@ -1,6 +1,4 @@
 // ======= Papyrus Library =======
-
-// Load library from localStorage or start with empty array
 let library = JSON.parse(localStorage.getItem("library")) || [];
 
 // ======= Book Constructor =======
@@ -9,7 +7,7 @@ function Book(title, author, status = "want", rating = 0) {
   this.author = author;
   this.status = status;
   this.rating = rating;
-  this.cover = "https://via.placeholder.com/100"; // default placeholder
+  this.cover = "https://via.placeholder.com/100"; // default cover
 }
 
 // ======= Add Book =======
@@ -35,20 +33,18 @@ bookForm.addEventListener("submit", (e) => {
   library.push(newBook);
   localStorage.setItem("library", JSON.stringify(library));
 
-  // Collapse search after adding
+  // Collapse search results after adding
   searchInput.value = "";
 
-  renderLibrary(); // show full library
+  renderLibrary();
   bookForm.reset();
 });
 
 // ======= Search Books =======
 searchInput.addEventListener("input", () => {
   const term = searchInput.value.trim().toLowerCase();
-
-  if (!term) {
-    renderLibrary(); // show full library
-  } else {
+  if (!term) renderLibrary();
+  else {
     const filtered = library.filter(book =>
       book.title.toLowerCase().includes(term) ||
       book.author.toLowerCase().includes(term)
@@ -63,7 +59,6 @@ function renderLibrary(booksToRender = library) {
   const readingShelf = document.getElementById("readingShelf");
   const finishedShelf = document.getElementById("finishedShelf");
 
-  // Clear shelves
   wantShelf.innerHTML = "";
   readingShelf.innerHTML = "";
   finishedShelf.innerHTML = "";
@@ -74,12 +69,9 @@ function renderLibrary(booksToRender = library) {
 
     // Star HTML
     let starsHTML = `<div class="stars">`;
-    for (let i = 1; i <= 5; i++) {
-      starsHTML += `<span class="star">&#9733;</span>`;
-    }
+    for (let i = 1; i <= 5; i++) starsHTML += `<span class="star">&#9733;</span>`;
     starsHTML += `</div>`;
 
-    // Book card content
     bookCard.innerHTML = `
       <img src="${book.cover}" alt="Book Cover">
       <h4>${book.title}</h4>
@@ -87,8 +79,8 @@ function renderLibrary(booksToRender = library) {
 
       <label>Status:</label>
       <select class="status-dropdown" data-index="${index}">
-        <option value="want" ${book.status === "want" ? "selected" : ""}>Want to Read</option>
-        <option value="reading" ${book.status === "reading" ? "selected" : ""}>Currently Reading</option>
+        <option value="want" ${book.status === "want" ? "selected" : ""}>Want To Read</option>
+        <option value="reading" ${book.status === "reading" ? "selected" : ""}>Reading</option>
         <option value="finished" ${book.status === "finished" ? "selected" : ""}>Finished</option>
       </select>
 
@@ -96,5 +88,46 @@ function renderLibrary(booksToRender = library) {
       <button class="remove-btn">Remove</button>
     `;
 
-    // ======= Status Change Logic =======
-    const dropdown = bookCard.querySelector(
+    // ======= Status Dropdown =======
+    const dropdown = bookCard.querySelector(".status-dropdown");
+    dropdown.addEventListener("change", (event) => {
+      const bookIndex = event.target.dataset.index;
+      library[bookIndex].status = event.target.value;
+      localStorage.setItem("library", JSON.stringify(library));
+      renderLibrary();
+    });
+
+    // ======= Star Ratings =======
+    const stars = bookCard.querySelectorAll(".star");
+    stars.forEach((star, i) => {
+      star.addEventListener("mouseenter", () => {
+        stars.forEach((s, idx) => (s.style.color = idx <= i ? "gold" : "grey"));
+      });
+      star.addEventListener("mouseleave", () => {
+        stars.forEach((s, idx) => (s.style.color = idx < book.rating ? "gold" : "grey"));
+      });
+      star.addEventListener("click", () => {
+        library[index].rating = i + 1;
+        localStorage.setItem("library", JSON.stringify(library));
+        renderLibrary();
+      });
+    });
+    stars.forEach((s, idx) => (s.style.color = idx < book.rating ? "gold" : "grey"));
+
+    // ======= Remove Button =======
+    const removeBtn = bookCard.querySelector(".remove-btn");
+    removeBtn.addEventListener("click", () => {
+      library.splice(index, 1);
+      localStorage.setItem("library", JSON.stringify(library));
+      renderLibrary();
+    });
+
+    // ======= Append to Correct Shelf =======
+    if (book.status === "want") wantShelf.appendChild(bookCard);
+    else if (book.status === "reading") readingShelf.appendChild(bookCard);
+    else if (book.status === "finished") finishedShelf.appendChild(bookCard);
+  });
+}
+
+// ======= Initial Render =======
+renderLibrary();
