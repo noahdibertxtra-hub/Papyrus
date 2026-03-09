@@ -37,6 +37,13 @@ function displayResults(books) {
       <p>${author}</p>
       <button class="add-btn">Add Book</button>
     `;
+const statusSelect = bookCard.querySelector(".status-select");
+
+statusSelect.addEventListener("change", () => {
+  library[index].status = statusSelect.value;
+  localStorage.setItem("library", JSON.stringify(library));
+  renderLibrary();
+});
 
     resultsDiv.appendChild(bookCard);
 
