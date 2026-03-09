@@ -17,18 +17,15 @@ async function searchBooks() {
   displayResults(data.docs);
 }
 
-// --------------------
-// Display Search Results
-// --------------------
 function displayResults(books) {
   const resultsDiv = document.getElementById("results");
   resultsDiv.innerHTML = "";
 
-  books.forEach(book => {
+  books.forEach((book) => {
     const title = book.title;
     const author = book.author_name ? book.author_name[0] : "Unknown";
-    const cover = book.cover_i 
-      ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg` 
+    const cover = book.cover_i
+      ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
       : "https://via.placeholder.com/80x120?text=No+Cover";
 
     const bookCard = document.createElement("div");
@@ -38,13 +35,20 @@ function displayResults(books) {
       <img src="${cover}">
       <h4>${title}</h4>
       <p>${author}</p>
-      <button onclick="addBook('${title}', '${author}', '${cover}')">Add Book</button>
+      <button class="add-btn">Add Book</button>
     `;
 
     resultsDiv.appendChild(bookCard);
+
+    // Add click listener safely
+    const addBtn = bookCard.querySelector(".add-btn");
+    addBtn.addEventListener("click", () => {
+      addBook(title, author, cover);
+    });
   });
 }
 
+   
 // --------------------
 // Add Book to Library
 // --------------------
