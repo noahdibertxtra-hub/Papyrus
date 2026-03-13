@@ -17,6 +17,9 @@
   <button id="search-button">Search</button>
 </section>
 
+<!-- Search History -->
+<section id="search-history"></section>
+
 <!-- Search Results -->
 <section id="search-results"></section>
 
@@ -34,24 +37,54 @@
   </form>
 </section>
 
+<!-- Filter & Sort Controls -->
+<section id="filter-sort-section">
+  <label>Filter by Status:
+    <select id="filter-status">
+      <option value="all">All</option>
+      <option value="want">Want To Read</option>
+      <option value="reading">Reading</option>
+      <option value="finished">Finished</option>
+    </select>
+  </label>
+
+  <label>Sort by:
+    <select id="sort-by">
+      <option value="title">Title</option>
+      <option value="author">Author</option>
+      <option value="rating">Rating</option>
+    </select>
+  </label>
+</section>
+
 <!-- Shelves Container -->
 <section id="library-section" class="shelves-container">
-  <div class="shelf-container">
+  <div class="shelf-container" data-status="want">
     <h2>Want To Read</h2>
-    <div id="wantShelf" class="shelf"></div>
+    <div id="wantShelf" class="shelf drop-zone"></div>
   </div>
 
-  <div class="shelf-container">
+  <div class="shelf-container" data-status="reading">
     <h2>Reading</h2>
-    <div id="readingShelf" class="shelf"></div>
+    <div id="readingShelf" class="shelf drop-zone"></div>
   </div>
 
-  <div class="shelf-container">
+  <div class="shelf-container" data-status="finished">
     <h2>Finished</h2>
-    <div id="finishedShelf" class="shelf"></div>
+    <div id="finishedShelf" class="shelf drop-zone"></div>
   </div>
 </section>
 
-<script src="script.js"></script>
-</body>
-</html>
+<!-- Book Details Modal -->
+<div id="book-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <img id="modal-cover" src="" alt="Book Cover">
+    <h2 id="modal-title"></h2>
+    <p id="modal-author"></p>
+    <p id="modal-publish"></p>
+    <p id="modal-description"></p>
+  </div>
+</div>
+
+<script src="script.js"></script
