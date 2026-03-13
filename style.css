@@ -1,171 +1,158 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-  background: #f5f5f5;
-  color: #333;
-}
-
-header h1 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-section {
-  margin-bottom: 20px;
-}
-
-/* Search Section */
-#search-section {
-  display: flex;
-  justify-content: center;
-  gap: 5px;
-  margin-bottom: 10px;
-}
-
-#search-input {
-  flex: 0 0 250px;
-  padding: 8px;
-  font-size: 16px;
-}
-
-#search-button {
-  padding: 8px 12px;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 3px;
-}
-
-#search-button:hover {
-  background-color: #45a049;
-}
-
-/* Search Results */
-#search-results {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-/* Book Form */
-#book-form {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-#book-form input,
-#book-form select {
-  padding: 5px;
-  font-size: 14px;
-}
-
-#book-form button {
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-/* Shelves */
-.shelves-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.shelf-container {
-  flex: 1;
-}
-
-.shelf-container h2 {
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.shelf {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-/* Book Cards */
-.bookCard {
-  border: 1px solid #ccc;
-  background: #fff;
-  padding: 10px;
-  width: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-  border-radius: 5px;
-}
-
-.bookCard img {
-  width: 100px;
-  height: 150px;
-  object-fit: cover;
-  margin-bottom: 5px;
-}
-
-.bookCard h4 {
-  margin: 5px 0;
-  font-size: 16px;
-  text-align: center;
-}
-
-.bookCard p {
-  font-size: 14px;
-  text-align: center;
-  margin: 2px 0;
-}
-
-/* Status Dropdown */
-.status-dropdown {
-  margin: 5px 0;
-  padding: 3px;
-  width: 100%;
-}
-
-/* Stars */
-.stars {
-  display: flex;
-  justify-content: center;
-  margin: 5px 0;
-}
-
-.star {
-  cursor: pointer;
-  font-size: 18px;
-  color: grey;
-  transition: color 0.2s;
-}
-
-/* Remove Button */
-.remove-btn {
-  background: #ff4d4d;
-  color: #fff;
-  border: none;
-  padding: 5px 8px;
-  cursor: pointer;
-  border-radius: 3px;
-  font-size: 14px;
-  margin-top: 5px;
-}
-
-.remove-btn:hover {
-  background: #e60000;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-  .shelves-container {
-    flex-direction: column;
-    gap: 15px;
-  }
-}
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/style.css b/style.css
+index e3cecfd48675cf16a0b660ebc67240dbfb4dcd54..4d70b6cbfd1562559f2015857abd3c1e5aaddd9d 100644
+--- a/style.css
++++ b/style.css
+@@ -49,50 +49,64 @@ section {
+   gap: 10px;
+   justify-content: center;
+   margin-bottom: 20px;
+ }
+ 
+ /* Book Form */
+ #book-form {
+   display: flex;
+   justify-content: center;
+   flex-wrap: wrap;
+   gap: 10px;
+   margin-bottom: 20px;
+ }
+ 
+ #book-form input,
+ #book-form select {
+   padding: 5px;
+   font-size: 14px;
+ }
+ 
+ #book-form button {
+   padding: 5px 10px;
+   cursor: pointer;
+ }
+ 
++/* Library Controls */
++#library-controls {
++  display: flex;
++  justify-content: center;
++  gap: 10px;
++  flex-wrap: wrap;
++}
++
++#library-controls input,
++#library-controls select {
++  padding: 6px;
++  font-size: 14px;
++}
++
+ /* Shelves */
+ .shelves-container {
+   display: flex;
+   justify-content: space-between;
+   gap: 20px;
+ }
+ 
+ .shelf-container {
+   flex: 1;
+ }
+ 
+ .shelf-container h2 {
+   text-align: center;
+   margin-bottom: 10px;
+ }
+ 
+ .shelf {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 10px;
+ }
+ 
+ /* Book Cards */
+ .bookCard {
+   border: 1px solid #ccc;
+@@ -140,32 +154,84 @@ section {
+ }
+ 
+ .star {
+   cursor: pointer;
+   font-size: 18px;
+   color: grey;
+   transition: color 0.2s;
+ }
+ 
+ /* Remove Button */
+ .remove-btn {
+   background: #ff4d4d;
+   color: #fff;
+   border: none;
+   padding: 5px 8px;
+   cursor: pointer;
+   border-radius: 3px;
+   font-size: 14px;
+   margin-top: 5px;
+ }
+ 
+ .remove-btn:hover {
+   background: #e60000;
+ }
+ 
++.edit-btn,
++.save-notes-btn {
++  border: none;
++  padding: 5px 8px;
++  cursor: pointer;
++  border-radius: 3px;
++  font-size: 13px;
++  margin-top: 5px;
++  width: 100%;
++}
++
++.edit-btn {
++  background: #3d7bfd;
++  color: #fff;
++}
++
++.edit-btn:hover {
++  background: #225de0;
++}
++
++
++.review-label {
++  width: 100%;
++  font-size: 12px;
++  font-weight: 600;
++  margin-top: 6px;
++}
++
++.review-count {
++  width: 100%;
++  text-align: right;
++  color: #666;
++  font-size: 11px;
++}
++
++.book-notes {
++  width: 100%;
++  margin-top: 6px;
++  font-size: 13px;
++  min-height: 58px;
++  resize: vertical;
++}
++
++.save-notes-btn {
++  background: #444;
++  color: #fff;
++}
++
++.save-notes-btn:hover {
++  background: #2f2f2f;
++}
++
+ /* Responsive */
+ @media (max-width: 900px) {
+   .shelves-container {
+     flex-direction: column;
+     gap: 15px;
+   }
+ }
+ 
+EOF
+)
