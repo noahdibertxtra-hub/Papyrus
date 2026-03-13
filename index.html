@@ -1,57 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Papyrus Library</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<header>
-  <h1>Papyrus Library</h1>
-</header>
-
-<!-- Search Section -->
-<section id="search-section">
-  <input type="text" id="search-input" placeholder="Search books..." maxlength="50">
-  <button id="search-button">Search</button>
-</section>
-
-<!-- Search Results -->
-<section id="search-results"></section>
-
-<!-- Add Book Form -->
-<section id="add-book-section">
-  <form id="book-form">
-    <input type="text" id="title" placeholder="Title" required>
-    <input type="text" id="author" placeholder="Author" required>
-    <select id="status">
-      <option value="want">Want To Read</option>
-      <option value="reading">Reading</option>
-      <option value="finished">Finished</option>
-    </select>
-    <button type="submit">Add Book</button>
-  </form>
-</section>
-
-<!-- Shelves Container -->
-<section id="library-section" class="shelves-container">
-  <div class="shelf-container">
-    <h2>Want To Read</h2>
-    <div id="wantShelf" class="shelf"></div>
-  </div>
-
-  <div class="shelf-container">
-    <h2>Reading</h2>
-    <div id="readingShelf" class="shelf"></div>
-  </div>
-
-  <div class="shelf-container">
-    <h2>Finished</h2>
-    <div id="finishedShelf" class="shelf"></div>
-  </div>
-</section>
-
-<script src="script.js"></script>
-</body>
-</html>
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/index.html b/index.html
+index 7e8784f76b031856cf37c073b87561ffb2fb304d..db5004145bd85ca909adea0334900bcc77682d7c 100644
+--- a/index.html
++++ b/index.html
+@@ -12,46 +12,65 @@
+ </header>
+ 
+ <!-- Search Section -->
+ <section id="search-section">
+   <input type="text" id="search-input" placeholder="Search books..." maxlength="50">
+   <button id="search-button">Search</button>
+ </section>
+ 
+ <!-- Search Results -->
+ <section id="search-results"></section>
+ 
+ <!-- Add Book Form -->
+ <section id="add-book-section">
+   <form id="book-form">
+     <input type="text" id="title" placeholder="Title" required>
+     <input type="text" id="author" placeholder="Author" required>
+     <select id="status">
+       <option value="want">Want To Read</option>
+       <option value="reading">Reading</option>
+       <option value="finished">Finished</option>
+     </select>
+     <button type="submit">Add Book</button>
+   </form>
+ </section>
+ 
++<!-- Library Controls -->
++<section id="library-controls" aria-label="Library controls">
++  <input type="text" id="library-filter-input" placeholder="Filter your library..." maxlength="60">
++
++  <select id="status-filter" aria-label="Filter by status">
++    <option value="all">All Statuses</option>
++    <option value="want">Want To Read</option>
++    <option value="reading">Reading</option>
++    <option value="finished">Finished</option>
++  </select>
++
++  <select id="sort-select" aria-label="Sort books">
++    <option value="newest">Newest First</option>
++    <option value="title-asc">Title (A-Z)</option>
++    <option value="author-asc">Author (A-Z)</option>
++    <option value="rating-desc">Highest Rated</option>
++  </select>
++</section>
++
+ <!-- Shelves Container -->
+ <section id="library-section" class="shelves-container">
+   <div class="shelf-container">
+     <h2>Want To Read</h2>
+     <div id="wantShelf" class="shelf"></div>
+   </div>
+ 
+   <div class="shelf-container">
+     <h2>Reading</h2>
+     <div id="readingShelf" class="shelf"></div>
+   </div>
+ 
+   <div class="shelf-container">
+     <h2>Finished</h2>
+     <div id="finishedShelf" class="shelf"></div>
+   </div>
+ </section>
+ 
+ <script src="script.js"></script>
+ </body>
+ </html>
+ 
+EOF
+)
