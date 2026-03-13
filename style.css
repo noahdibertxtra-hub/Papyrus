@@ -42,6 +42,19 @@ section {
   background-color: #45a049;
 }
 
+/* Search History */
+#search-history {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#search-history button {
+  margin: 2px;
+  padding: 3px 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
 /* Search Results */
 #search-results {
   display: flex;
@@ -71,6 +84,14 @@ section {
   cursor: pointer;
 }
 
+/* Filter & Sort */
+#filter-sort-section {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
 /* Shelves */
 .shelves-container {
   display: flex;
@@ -91,6 +112,14 @@ section {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  min-height: 150px;
+  padding: 5px;
+  border: 1px dashed #ccc;
+}
+
+.drop-zone.drag-over {
+  border-color: #4CAF50;
+  background-color: #e8f5e9;
 }
 
 /* Book Cards */
@@ -104,6 +133,7 @@ section {
   align-items: center;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
   border-radius: 5px;
+  cursor: grab;
 }
 
 .bookCard img {
@@ -160,6 +190,34 @@ section {
 
 .remove-btn:hover {
   background: #e60000;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  overflow:auto;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background:#fff;
+  margin: 10% auto;
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.close-btn {
+  float:right;
+  cursor:pointer;
+  font-size: 20px;
 }
 
 /* Responsive */
