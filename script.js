@@ -93,15 +93,16 @@ async function performSearch(query){
       `;
 
       card.querySelector(".add-btn").addEventListener("click", ()=>{
-        if(!library.some(b=>b.title.toLowerCase()===title.toLowerCase() && b.author.toLowerCase()===author.toLowerCase())){
-          library.push(new Book(title, author, "want",0,cover));
-          localStorage.setItem("library",JSON.stringify(library));
-          renderLibrary();
-          searchResults.innerHTML="";
-          searchInput.value="";
-          alert("Book added!");
-        }else alert("Book already in library!");
-      });
+  if(!library.some(b=>b.title.toLowerCase()===title.toLowerCase() && b.author.toLowerCase()===author.toLowerCase())){
+    library.push(new Book(title, author, "want",0,cover));
+    localStorage.setItem("library",JSON.stringify(library));
+    renderLibrary();
+    searchResults.innerHTML="";
+    searchInput.value="";
+  }else{
+    alert("Book already in library!");
+  }
+});
 
       searchResults.appendChild(card);
     });
