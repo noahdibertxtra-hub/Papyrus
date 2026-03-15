@@ -111,7 +111,7 @@ async function performSearch(query){
     searchResults.innerHTML="";
     searchInput.value="";
   }else{
-    alert("Book already in library!");
+    showToast("Book already in library");
   }
 });
 
