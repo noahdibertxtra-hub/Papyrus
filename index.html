@@ -1,94 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Papyrus Library</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Papyrus Library</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <header>
-  <h1>Papyrus Library</h1>
+<h1>Papyrus Library</h1>
 </header>
 
-<!-- Search Section -->
 <section id="search-section">
-  <input type="text" id="search-input" placeholder="Search books..." maxlength="50">
-  <button id="search-button">Search</button>
+<input type="text" id="search-input" placeholder="Search books..." maxlength="50">
+<button id="search-button">Search</button>
 </section>
 
-<!-- Search History -->
 <section id="search-history"></section>
 
-<!-- Search Results -->
 <section id="search-results"></section>
 
-<!-- Add Book Form -->
 <section id="add-book-section">
-  <form id="book-form">
-    <input type="text" id="title" placeholder="Title" required>
-    <input type="text" id="author" placeholder="Author" required>
-    <select id="status">
-      <option value="want">Want To Read</option>
-      <option value="reading">Reading</option>
-      <option value="finished">Finished</option>
-    </select>
-    <button type="submit">Add Book</button>
-  </form>
+<form id="book-form">
+<input type="text" id="title" placeholder="Title" required>
+<input type="text" id="author" placeholder="Author" required>
+
+<select id="status">
+<option value="want">Want To Read</option>
+<option value="reading">Reading</option>
+<option value="finished">Finished</option>
+</select>
+
+<button type="submit">Add Book</button>
+</form>
 </section>
 
-<!-- Filter & Sort Controls -->
 <section id="filter-sort-section">
-  <label>Filter by Status:
-    <select id="filter-status">
-      <option value="all">All</option>
-      <option value="want">Want To Read</option>
-      <option value="reading">Reading</option>
-      <option value="finished">Finished</option>
-    </select>
-  </label>
 
-  <label>Sort by:
-    <select id="sort-by">
-      <option value="title">Title</option>
-      <option value="author">Author</option>
-      <option value="rating">Rating</option>
-    </select>
-  </label>
+<label>Filter by Status
+<select id="filter-status">
+<option value="all">All</option>
+<option value="want">Want To Read</option>
+<option value="reading">Reading</option>
+<option value="finished">Finished</option>
+</select>
+</label>
+
+<label>Sort by
+<select id="sort-by">
+<option value="title">Title</option>
+<option value="author">Author</option>
+<option value="rating">Rating</option>
+</select>
+</label>
+
 </section>
 
-<!-- Shelves Container -->
 <section id="library-section" class="shelves-container">
-  <div class="shelf-container" data-status="want">
-    <h2>Want To Read</h2>
-    <div id="wantShelf" class="shelf drop-zone"></div>
-  </div>
 
-  <div class="shelf-container" data-status="reading">
-    <h2>Reading</h2>
-    <div id="readingShelf" class="shelf drop-zone"></div>
-  </div>
+<div class="shelf-container" data-status="want">
+<h2>Want To Read</h2>
+<div id="wantShelf" class="shelf drop-zone"></div>
+</div>
 
-  <div class="shelf-container" data-status="finished">
-    <h2>Finished</h2>
-    <div id="finishedShelf" class="shelf drop-zone"></div>
-  </div>
+<div class="shelf-container" data-status="reading">
+<h2>Reading</h2>
+<div id="readingShelf" class="shelf drop-zone"></div>
+</div>
+
+<div class="shelf-container" data-status="finished">
+<h2>Finished</h2>
+<div id="finishedShelf" class="shelf drop-zone"></div>
+</div>
+
 </section>
 
-<!-- Book Details Modal -->
 <div id="book-modal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn">&times;</span>
-    <img id="modal-cover" src="" alt="Book Cover">
-    <h2 id="modal-title"></h2>
-    <p id="modal-author"></p>
-    <p id="modal-publish"></p>
-    <p id="modal-description"></p>
-  </div>
+
+<div class="modal-content">
+
+<span class="close-btn">&times;</span>
+
+<img id="modal-cover" src="">
+
+<h2 id="modal-title"></h2>
+
+<p id="modal-author"></p>
+
+<p id="modal-publish"></p>
+
+<p id="modal-description"></p>
+
+</div>
+
 </div>
 
 <div id="toast" class="toast"></div>
 
 <script src="script.js"></script>
+
 </body>
 </html>
