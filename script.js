@@ -2,12 +2,14 @@ let library = JSON.parse(localStorage.getItem("library")) || [];
 let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 
 // Book constructor
-function Book(title, author, status="want", rating=0, cover="https://via.placeholder.com/100") {
+function Book(title, author, status="want", rating=0, cover="https://via.placeholder.com/100", notes="", tags=[]) {
   this.title = title;
   this.author = author;
   this.status = status;
   this.rating = rating;
   this.cover = cover;
+  this.notes = notes;
+  this.tags = tags;
 }
 
 // Elements
@@ -29,18 +31,40 @@ const modalPublish = document.getElementById("modal-publish");
 const modalDesc = document.getElementById("modal-description");
 const closeBtn = document.querySelector(".close-btn");
 
+// Stats elements
+let statsContainer = document.getElementById("library-stats");
+if(!statsContainer){
+  statsContainer = document.createElement("section");
+  statsContainer.id = "library-stats";
+  document.body.insertBefore(statsContainer, document.getElementById("library-section"));
+}
+
+// Toast notification
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2000);
+}
+
 // ===== Book Form =====
 bookForm.addEventListener("submit", e=>{
   e.preventDefault();
   const title = document.getElementById("title").value.trim();
   const author = document.getElementById("author").value.trim();
   const status = document.getElementById("status").value;
+  let tagsInput = document.getElementById("tags");
+  let tags = tagsInput ? tagsInput.value.split(",").map(t=>t.trim()).filter(t=>t) : [];
+
   if(!title || !author) return;
   if(library.some(b=>b.title.toLowerCase()===title.toLowerCase() && b.author.toLowerCase()===author.toLowerCase())){
     alert("Book already in library!");
     return;
   }
-  library.push(new Book(title, author, status));
+  library.push(new Book(title, author, status, 0, "https://via.placeholder.com/100", "", tags));
   localStorage.setItem("library", JSON.stringify(library));
   bookForm.reset();
   renderLibrary();
@@ -80,15 +104,16 @@ async function performSearch(query){
       `;
 
       card.querySelector(".add-btn").addEventListener("click", ()=>{
-        if(!library.some(b=>b.title.toLowerCase()===title.toLowerCase() && b.author.toLowerCase()===author.toLowerCase())){
-          library.push(new Book(title, author, "want",0,cover));
-          localStorage.setItem("library",JSON.stringify(library));
-          renderLibrary();
-          searchResults.innerHTML="";
-          searchInput.value="";
-          alert("Book added!");
-        }else alert("Book already in library!");
-      });
+  if(!library.some(b=>b.title.toLowerCase()===title.toLowerCase() && b.author.toLowerCase()===author.toLowerCase())){
+    library.push(new Book(title, author, "want",0,cover));
+    localStorage.setItem("library",JSON.stringify(library));
+    renderLibrary();
+    searchResults.innerHTML="";
+    searchInput.value="";
+  }else{
+    alert("Book already in library!");
+  }
+});
 
       searchResults.appendChild(card);
     });
@@ -114,7 +139,7 @@ function renderSearchHistory(){
   searchHistory.forEach(q=>{
     const btn = document.createElement("button");
     btn.textContent = q;
-    btn.addEventListener("click", ()=>performSearch(q));
+    btn.addEventListener("click",()=>performSearch(q));
     searchHistoryEl.appendChild(btn);
   });
 }
@@ -142,6 +167,9 @@ function renderLibrary(){
     for(let i=1;i<=5;i++) starsHTML+=`<span class="star">&#9733;</span>`;
     starsHTML+="</div>";
 
+    let tagsHTML = "";
+    if(book.tags && book.tags.length>0) tagsHTML = "<p>Tags: "+book.tags.join(", ")+"</p>";
+
     card.innerHTML = `
       <img src="${book.cover}" alt="Book Cover">
       <h4>${book.title}</h4>
@@ -153,6 +181,7 @@ function renderLibrary(){
         <option value="finished" ${book.status==="finished"?"selected":""}>Finished</option>
       </select>
       ${starsHTML}
+      ${tagsHTML}
       <button class="remove-btn">Remove</button>
     `;
 
@@ -168,7 +197,11 @@ function renderLibrary(){
     stars.forEach((s,i)=>{
       s.addEventListener("mouseenter",()=>stars.forEach((st,j)=>st.style.color=j<=i?"gold":"grey"));
       s.addEventListener("mouseleave",()=>stars.forEach((st,j)=>st.style.color=j<book.rating?"gold":"grey"));
-      s.addEventListener("click",()=>{ library[index].rating=i+1; localStorage.setItem("library",JSON.stringify(library)); renderLibrary(); });
+      s.addEventListener("click",()=>{ 
+        library[index].rating=i+1; 
+        localStorage.setItem("library",JSON.stringify(library)); 
+        renderLibrary(); 
+      });
       s.style.color=i<book.rating?"gold":"grey";
     });
 
@@ -186,7 +219,7 @@ function renderLibrary(){
       modalTitle.textContent=book.title;
       modalAuthor.textContent="Author: "+book.author;
       modalPublish.textContent="";
-      modalDesc.textContent="";
+      modalDesc.innerHTML=`<p>${book.notes || "No notes yet."}</p>`;
       modal.style.display="block";
     });
 
@@ -217,6 +250,54 @@ function renderLibrary(){
     card.addEventListener("dragstart",e=>{
       e.dataTransfer.setData("text/plain", card.querySelector("h4").textContent);
     });
+  });
+
+  renderStats();
+}
+
+// ===== Library Stats =====
+function renderStats(){
+  const total = library.length;
+  const want = library.filter(b=>b.status==="want").length;
+  const reading = library.filter(b=>b.status==="reading").length;
+  const finished = library.filter(b=>b.status==="finished").length;
+  const ratedBooks = library.filter(b=>b.rating>0);
+  const avgRating = ratedBooks.length>0 ? (ratedBooks.reduce((a,b)=>a+b.rating,0)/ratedBooks.length).toFixed(1) : 0;
+
+  statsContainer.innerHTML = `
+    <h3>Library Stats</h3>
+    <p>Total Books: ${total}</p>
+    <p>Want To Read: ${want}</p>
+    <p>Reading: ${reading}</p>
+    <p>Finished: ${finished}</p>
+    <p>Average Rating: ${avgRating}</p>
+    <button id="export-library">Export Library</button>
+    <input type="file" id="import-library" accept="application/json">
+  `;
+
+  document.getElementById("export-library").addEventListener("click",()=>{
+    const dataStr = JSON.stringify(library, null, 2);
+    const blob = new Blob([dataStr], {type: "application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "papyrus-library.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById("import-library").addEventListener("change",e=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = e=>{
+      try{
+        library = JSON.parse(e.target.result);
+        localStorage.setItem("library", JSON.stringify(library));
+        renderLibrary();
+      }catch(err){ alert("Invalid file format"); }
+    };
+    reader.readAsText(file);
   });
 }
 
