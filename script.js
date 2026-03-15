@@ -61,7 +61,7 @@ bookForm.addEventListener("submit", e=>{
 
   if(!title || !author) return;
   if(library.some(b=>b.title.toLowerCase()===title.toLowerCase() && b.author.toLowerCase()===author.toLowerCase())){
-    alert("Book already in library!");
+    showToast("Book already in library");
     return;
   }
   library.push(new Book(title, author, status, 0, "https://via.placeholder.com/100", "", tags));
