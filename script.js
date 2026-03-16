@@ -1,318 +1,316 @@
-// ==========================
-// STORAGE
-// ==========================
-
 let library = JSON.parse(localStorage.getItem("library")) || [];
 let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
-let customShelves = JSON.parse(localStorage.getItem("customShelves")) || [];
 
-function saveLibrary(){
-localStorage.setItem("library",JSON.stringify(library));
+// Book constructor
+function Book(title, author, status="want", rating=0, cover="https://via.placeholder.com/100", notes="", tags=[]) {
+  this.title = title;
+  this.author = author;
+  this.status = status;
+  this.rating = rating;
+  this.cover = cover;
+  this.notes = notes;
+  this.tags = tags;
 }
 
-function saveShelves(){
-localStorage.setItem("customShelves",JSON.stringify(customShelves));
-}
-
-// ==========================
-// BOOK MODEL
-// ==========================
-
-function Book(title,author,status="want",rating=0,cover="https://via.placeholder.com/100",pages=0){
-
-this.id = Date.now();
-
-this.title = title;
-this.author = author;
-
-this.status = status;
-
-this.rating = rating;
-
-this.cover = cover;
-
-this.pages = pages;
-
-this.progress = 0;
-
-this.review = "";
-
-this.shelves = [];
-
-}
-
-// ==========================
-// ELEMENTS
-// ==========================
-
+// Elements
 const bookForm = document.getElementById("book-form");
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
 const searchResults = document.getElementById("search-results");
+const searchHistoryEl = document.getElementById("search-history");
 
 const filterStatus = document.getElementById("filter-status");
 const sortBy = document.getElementById("sort-by");
 
-// modal
-
+// Modal elements
 const modal = document.getElementById("book-modal");
 const modalCover = document.getElementById("modal-cover");
 const modalTitle = document.getElementById("modal-title");
 const modalAuthor = document.getElementById("modal-author");
-
-const modalProgress = document.getElementById("modal-progress");
-const modalReview = document.getElementById("modal-review");
-
-const saveDetailsBtn = document.getElementById("save-book-details");
-
+const modalPublish = document.getElementById("modal-publish");
+const modalDesc = document.getElementById("modal-description");
 const closeBtn = document.querySelector(".close-btn");
 
-let activeBook = null;
+// Stats elements
+let statsContainer = document.getElementById("library-stats");
+if(!statsContainer){
+  statsContainer = document.createElement("section");
+  statsContainer.id = "library-stats";
+  document.body.insertBefore(statsContainer, document.getElementById("library-section"));
+}
 
-// ==========================
-// BOOK FORM
-// ==========================
+// Toast notification
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
 
-bookForm.addEventListener("submit",e=>{
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2000);
+}
 
-e.preventDefault();
+// ===== Book Form =====
+bookForm.addEventListener("submit", e=>{
+  e.preventDefault();
+  const title = document.getElementById("title").value.trim();
+  const author = document.getElementById("author").value.trim();
+  const status = document.getElementById("status").value;
+  let tagsInput = document.getElementById("tags");
+  let tags = tagsInput ? tagsInput.value.split(",").map(t=>t.trim()).filter(t=>t) : [];
 
-const title=document.getElementById("title").value.trim();
-const author=document.getElementById("author").value.trim();
-const status=document.getElementById("status").value;
-
-if(!title||!author) return;
-
-library.push(new Book(title,author,status));
-
-saveLibrary();
-
-bookForm.reset();
-
-renderLibrary();
-
+  if(!title || !author) return;
+  if(library.some(b=>b.title.toLowerCase()===title.toLowerCase() && b.author.toLowerCase()===author.toLowerCase())){
+    alert("Book already in library!");
+    return;
+  }
+  library.push(new Book(title, author, status, 0, "https://via.placeholder.com/100", "", tags));
+  localStorage.setItem("library", JSON.stringify(library));
+  bookForm.reset();
+  renderLibrary();
 });
 
-// ==========================
-// SEARCH
-// ==========================
-
+// ===== Open Library Search =====
 async function performSearch(query){
+  query = query || searchInput.value.trim();
+  if(!query) return alert("Enter a search term");
 
-query=query||searchInput.value.trim();
+  searchResults.innerHTML = "<p>Searching...</p>";
+  saveSearchHistory(query);
 
-if(!query) return alert("Enter search term");
+  try{
+    const res = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=10`);
+    const data = await res.json();
 
-searchResults.innerHTML="Searching...";
+    searchResults.innerHTML = "";
+    if(!data.docs || data.docs.length===0) {
+      searchResults.innerHTML="<p>No results found.</p>";
+      return;
+    }
 
-try{
+    data.docs.forEach(doc=>{
+      const card = document.createElement("div");
+      card.className = "bookCard";
 
-const res=await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=10`);
+      const title = doc.title || "No Title";
+      const author = doc.author_name ? doc.author_name.join(", ") : "Unknown Author";
+      const cover = doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg` : "https://via.placeholder.com/100";
 
-const data=await res.json();
+      card.innerHTML = `
+        <img src="${cover}" alt="Book Cover">
+        <h4>${title}</h4>
+        <p>${author}</p>
+        <button class="add-btn">Add Book</button>
+      `;
 
-searchResults.innerHTML="";
-
-data.docs.forEach(doc=>{
-
-const title=doc.title||"No Title";
-const author=doc.author_name?doc.author_name.join(", "):"Unknown";
-
-const cover=doc.cover_i?`https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`:"https://via.placeholder.com/100";
-
-const pages=doc.number_of_pages_median||0;
-
-const card=document.createElement("div");
-card.className="bookCard";
-
-card.innerHTML=`
-
-<img src="${cover}">
-<h4>${title}</h4>
-<p>${author}</p>
-<button>Add Book</button>
-
-`;
-
-card.querySelector("button").onclick=()=>{
-
-library.push(new Book(title,author,"want",0,cover,pages));
-
-saveLibrary();
-
-renderLibrary();
-
-};
-
-searchResults.appendChild(card);
-
+      card.querySelector(".add-btn").addEventListener("click", ()=>{
+  if(!library.some(b=>b.title.toLowerCase()===title.toLowerCase() && b.author.toLowerCase()===author.toLowerCase())){
+    library.push(new Book(title, author, "want",0,cover));
+    localStorage.setItem("library",JSON.stringify(library));
+    renderLibrary();
+    searchResults.innerHTML="";
+    searchInput.value="";
+  }else{
+    alert("Book already in library!");
+  }
 });
 
-}catch{
+      searchResults.appendChild(card);
+    });
 
-searchResults.innerHTML="Error fetching results.";
-
+  }catch(err){
+    searchResults.innerHTML="<p>Error fetching results.</p>";
+    console.error(err);
+  }
 }
 
+// ===== Search History =====
+function saveSearchHistory(query){
+  if(searchHistory.includes(query)) return;
+  searchHistory.unshift(query);
+  if(searchHistory.length>5) searchHistory.pop();
+  localStorage.setItem("searchHistory",JSON.stringify(searchHistory));
+  renderSearchHistory();
 }
 
-// ==========================
-// RENDER LIBRARY
-// ==========================
+function renderSearchHistory(){
+  if(!searchHistoryEl) return;
+  searchHistoryEl.innerHTML = "";
+  searchHistory.forEach(q=>{
+    const btn = document.createElement("button");
+    btn.textContent = q;
+    btn.addEventListener("click",()=>performSearch(q));
+    searchHistoryEl.appendChild(btn);
+  });
+}
 
+// ===== Render Library =====
 function renderLibrary(){
+  const wantShelf = document.getElementById("wantShelf");
+  const readingShelf = document.getElementById("readingShelf");
+  const finishedShelf = document.getElementById("finishedShelf");
 
-const wantShelf=document.getElementById("wantShelf");
-const readingShelf=document.getElementById("readingShelf");
-const finishedShelf=document.getElementById("finishedShelf");
+  wantShelf.innerHTML=""; readingShelf.innerHTML=""; finishedShelf.innerHTML="";
 
-wantShelf.innerHTML="";
-readingShelf.innerHTML="";
-finishedShelf.innerHTML="";
+  let filtered = library;
+  if(filterStatus.value!=="all") filtered = filtered.filter(b=>b.status===filterStatus.value);
+  if(sortBy.value==="title") filtered.sort((a,b)=>a.title.localeCompare(b.title));
+  if(sortBy.value==="author") filtered.sort((a,b)=>a.author.localeCompare(b.author));
+  if(sortBy.value==="rating") filtered.sort((a,b)=>b.rating-a.rating);
 
-let filtered=[...library];
+  filtered.forEach((book,index)=>{
+    const card = document.createElement("div");
+    card.className="bookCard";
+    card.draggable=true;
 
-if(filterStatus.value!=="all")
-filtered=filtered.filter(b=>b.status===filterStatus.value);
+    let starsHTML="<div class='stars'>";
+    for(let i=1;i<=5;i++) starsHTML+=`<span class="star">&#9733;</span>`;
+    starsHTML+="</div>";
 
-if(sortBy.value==="title")
-filtered.sort((a,b)=>a.title.localeCompare(b.title));
+    let tagsHTML = "";
+    if(book.tags && book.tags.length>0) tagsHTML = "<p>Tags: "+book.tags.join(", ")+"</p>";
 
-if(sortBy.value==="author")
-filtered.sort((a,b)=>a.author.localeCompare(b.author));
+    card.innerHTML = `
+      <img src="${book.cover}" alt="Book Cover">
+      <h4>${book.title}</h4>
+      <p>${book.author}</p>
+      <label>Status:</label>
+      <select class="status-dropdown" data-index="${index}">
+        <option value="want" ${book.status==="want"?"selected":""}>Want To Read</option>
+        <option value="reading" ${book.status==="reading"?"selected":""}>Reading</option>
+        <option value="finished" ${book.status==="finished"?"selected":""}>Finished</option>
+      </select>
+      ${starsHTML}
+      ${tagsHTML}
+      <button class="remove-btn">Remove</button>
+    `;
 
-if(sortBy.value==="rating")
-filtered.sort((a,b)=>b.rating-a.rating);
+    // Status change
+    card.querySelector(".status-dropdown").addEventListener("change",e=>{
+      library[index].status=e.target.value;
+      localStorage.setItem("library",JSON.stringify(library));
+      renderLibrary();
+    });
 
-filtered.forEach((book,index)=>{
+    // Stars
+    const stars = card.querySelectorAll(".star");
+    stars.forEach((s,i)=>{
+      s.addEventListener("mouseenter",()=>stars.forEach((st,j)=>st.style.color=j<=i?"gold":"grey"));
+      s.addEventListener("mouseleave",()=>stars.forEach((st,j)=>st.style.color=j<book.rating?"gold":"grey"));
+      s.addEventListener("click",()=>{ 
+        library[index].rating=i+1; 
+        localStorage.setItem("library",JSON.stringify(library)); 
+        renderLibrary(); 
+      });
+      s.style.color=i<book.rating?"gold":"grey";
+    });
 
-const card=document.createElement("div");
+    // Remove
+    card.querySelector(".remove-btn").addEventListener("click",()=>{
+      library.splice(index,1);
+      localStorage.setItem("library",JSON.stringify(library));
+      renderLibrary();
+    });
 
-card.className="bookCard";
+    // Click card to modal
+    card.addEventListener("click",e=>{
+      if(e.target.classList.contains("add-btn") || e.target.classList.contains("remove-btn") || e.target.tagName==="SELECT" || e.target.classList.contains("star")) return;
+      modalCover.src=book.cover;
+      modalTitle.textContent=book.title;
+      modalAuthor.textContent="Author: "+book.author;
+      modalPublish.textContent="";
+      modalDesc.innerHTML=`<p>${book.notes || "No notes yet."}</p>`;
+      modal.style.display="block";
+    });
 
-card.draggable=true;
+    if(book.status==="want") wantShelf.appendChild(card);
+    if(book.status==="reading") readingShelf.appendChild(card);
+    if(book.status==="finished") finishedShelf.appendChild(card);
+  });
 
-let progressPercent=0;
+  // Drag & Drop
+  const shelves = document.querySelectorAll(".drop-zone");
+  shelves.forEach(shelf=>{
+    shelf.addEventListener("dragover", e=>{ e.preventDefault(); shelf.classList.add("drag-over"); });
+    shelf.addEventListener("dragleave", ()=>shelf.classList.remove("drag-over"));
+    shelf.addEventListener("drop", e=>{
+      const bookTitle = e.dataTransfer.getData("text/plain");
+      const book = library.find(b=>b.title===bookTitle);
+      if(book){
+        book.status = shelf.parentElement.dataset.status;
+        localStorage.setItem("library",JSON.stringify(library));
+        renderLibrary();
+      }
+      shelf.classList.remove("drag-over");
+    });
+  });
 
-if(book.pages>0)
-progressPercent=(book.progress/book.pages)*100;
+  // Attach dragstart to cards
+  document.querySelectorAll(".bookCard").forEach(card=>{
+    card.addEventListener("dragstart",e=>{
+      e.dataTransfer.setData("text/plain", card.querySelector("h4").textContent);
+    });
+  });
 
-card.innerHTML=`
-
-<img src="${book.cover}">
-<h4>${book.title}</h4>
-<p>${book.author}</p>
-
-<div class="progress-container">
-<div class="progress-bar" style="width:${progressPercent}%"></div>
-</div>
-
-<label>Status</label>
-
-<select class="status-dropdown">
-
-<option value="want" ${book.status==="want"?"selected":""}>Want To Read</option>
-
-<option value="reading" ${book.status==="reading"?"selected":""}>Reading</option>
-
-<option value="finished" ${book.status==="finished"?"selected":""}>Finished</option>
-
-</select>
-
-<button class="remove-btn">Remove</button>
-
-`;
-
-card.querySelector(".status-dropdown").onchange=e=>{
-
-library[index].status=e.target.value;
-
-saveLibrary();
-
-renderLibrary();
-
-};
-
-card.querySelector(".remove-btn").onclick=()=>{
-
-library.splice(index,1);
-
-saveLibrary();
-
-renderLibrary();
-
-};
-
-card.onclick=e=>{
-
-if(e.target.tagName==="SELECT"||e.target.classList.contains("remove-btn")) return;
-
-openModal(book);
-
-};
-
-if(book.status==="want") wantShelf.appendChild(card);
-if(book.status==="reading") readingShelf.appendChild(card);
-if(book.status==="finished") finishedShelf.appendChild(card);
-
-});
-
+  renderStats();
 }
 
-// ==========================
-// MODAL
-// ==========================
+// ===== Library Stats =====
+function renderStats(){
+  const total = library.length;
+  const want = library.filter(b=>b.status==="want").length;
+  const reading = library.filter(b=>b.status==="reading").length;
+  const finished = library.filter(b=>b.status==="finished").length;
+  const ratedBooks = library.filter(b=>b.rating>0);
+  const avgRating = ratedBooks.length>0 ? (ratedBooks.reduce((a,b)=>a+b.rating,0)/ratedBooks.length).toFixed(1) : 0;
 
-function openModal(book){
+  statsContainer.innerHTML = `
+    <h3>Library Stats</h3>
+    <p>Total Books: ${total}</p>
+    <p>Want To Read: ${want}</p>
+    <p>Reading: ${reading}</p>
+    <p>Finished: ${finished}</p>
+    <p>Average Rating: ${avgRating}</p>
+    <button id="export-library">Export Library</button>
+    <input type="file" id="import-library" accept="application/json">
+  `;
 
-activeBook=book;
+  document.getElementById("export-library").addEventListener("click",()=>{
+    const dataStr = JSON.stringify(library, null, 2);
+    const blob = new Blob([dataStr], {type: "application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "papyrus-library.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
 
-modalCover.src=book.cover;
-
-modalTitle.textContent=book.title;
-
-modalAuthor.textContent="Author: "+book.author;
-
-modalProgress.value=book.progress;
-
-modalReview.value=book.review;
-
-modal.style.display="block";
-
+  document.getElementById("import-library").addEventListener("change",e=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = e=>{
+      try{
+        library = JSON.parse(e.target.result);
+        localStorage.setItem("library", JSON.stringify(library));
+        renderLibrary();
+      }catch(err){ alert("Invalid file format"); }
+    };
+    reader.readAsText(file);
+  });
 }
 
-saveDetailsBtn.onclick=()=>{
+// ===== Modal Close =====
+closeBtn.addEventListener("click",()=>modal.style.display="none");
+window.addEventListener("click",e=>{if(e.target===modal) modal.style.display="none";});
 
-activeBook.progress=parseInt(modalProgress.value)||0;
+// ===== Events =====
+searchButton.addEventListener("click",()=>performSearch());
+searchInput.addEventListener("keyup",e=>{if(e.key==="Enter") performSearch();});
+filterStatus.addEventListener("change",renderLibrary);
+sortBy.addEventListener("change",renderLibrary);
 
-activeBook.review=modalReview.value;
-
-saveLibrary();
-
-renderLibrary();
-
-modal.style.display="none";
-
-};
-
-closeBtn.onclick=()=>modal.style.display="none";
-
-// ==========================
-// EVENTS
-// ==========================
-
-searchButton.onclick=()=>performSearch();
-
-searchInput.addEventListener("keyup",e=>{
-if(e.key==="Enter") performSearch();
-});
-
-filterStatus.onchange=renderLibrary;
-
-sortBy.onchange=renderLibrary;
-
-// ==========================
-// INIT
-// ==========================
-
+// ===== Init =====
+renderSearchHistory();
 renderLibrary();
