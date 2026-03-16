@@ -1,10 +1,11 @@
 body{
-font-family:Arial;
-background:#f5f5f5;
+font-family:Arial,sans-serif;
 margin:20px;
+background:#f5f5f5;
+color:#333;
 }
 
-header{
+header h1{
 text-align:center;
 margin-bottom:20px;
 }
@@ -13,109 +14,139 @@ section{
 margin-bottom:20px;
 }
 
+/* Search */
+
 #search-section{
 display:flex;
 justify-content:center;
-gap:10px;
+gap:5px;
 }
 
 #search-input{
+flex:0 0 250px;
 padding:8px;
-width:250px;
+font-size:16px;
 }
 
 #search-button{
 padding:8px 12px;
+font-size:16px;
+cursor:pointer;
 background:#4CAF50;
 color:white;
 border:none;
-cursor:pointer;
+border-radius:3px;
 }
 
-#search-results{
+/* Shelves */
+
+.shelves-container{
+display:flex;
+justify-content:space-between;
+gap:20px;
+}
+
+.shelf-container{
+flex:1;
+}
+
+.shelf{
 display:flex;
 flex-wrap:wrap;
 gap:10px;
-justify-content:center;
+min-height:150px;
+padding:5px;
+border:1px dashed #ccc;
 }
 
-#library-grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,150px);
-gap:15px;
-justify-content:center;
-}
+/* Book Cards */
 
-.book-card{
-background:white;
+.bookCard{
 border:1px solid #ccc;
-border-radius:5px;
+background:white;
 padding:10px;
-text-align:center;
-cursor:pointer;
+width:150px;
+display:flex;
+flex-direction:column;
+align-items:center;
+border-radius:5px;
+box-shadow:2px 2px 5px rgba(0,0,0,0.1);
+cursor:grab;
 }
 
-.book-card img{
+.bookCard img{
 width:100px;
 height:150px;
 object-fit:cover;
+margin-bottom:5px;
 }
 
-.book-card h4{
-font-size:14px;
+.bookCard h4{
 margin:5px 0;
+font-size:16px;
+text-align:center;
+}
+
+/* Progress Bar */
+
+.progress-container{
+width:100%;
+height:6px;
+background:#ddd;
+border-radius:3px;
+margin-top:5px;
 }
 
 .progress-bar{
 height:6px;
-background:#ddd;
+background:#4CAF50;
+border-radius:3px;
+}
+
+/* Stars */
+
+.star{
+cursor:pointer;
+font-size:18px;
+color:grey;
+}
+
+/* Remove */
+
+.remove-btn{
+background:#ff4d4d;
+color:white;
+border:none;
+padding:5px 8px;
+cursor:pointer;
+border-radius:3px;
 margin-top:5px;
 }
 
-.progress-fill{
-height:6px;
-background:#4CAF50;
-}
-
-.star{
-color:gold;
-}
-
-#filters{
-display:flex;
-justify-content:center;
-gap:20px;
-}
-
-#shelf-manager{
-text-align:center;
-}
-
-#shelf-list{
-margin-top:10px;
-}
+/* Modal */
 
 .modal{
 display:none;
 position:fixed;
-top:0;
+z-index:1000;
 left:0;
+top:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.6);
+background:rgba(0,0,0,0.5);
 }
 
 .modal-content{
 background:white;
-width:300px;
 margin:10% auto;
 padding:20px;
-border-radius:5px;
+width:300px;
 text-align:center;
+border-radius:5px;
 }
 
 .close-btn{
-cursor:pointer;
 float:right;
+cursor:pointer;
 font-size:20px;
 }
