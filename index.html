@@ -9,29 +9,53 @@
 <body>
 
 <header>
-<h1>Papyrus</h1>
+<h1>Papyrus Library</h1>
 </header>
 
-<!-- SEARCH -->
+<!-- Search Section -->
 <section id="search-section">
-<input id="search-input" placeholder="Search books...">
+<input type="text" id="search-input" placeholder="Search books..." maxlength="50">
 <button id="search-button">Search</button>
 </section>
 
+<!-- Search History -->
+<section id="search-history"></section>
+
+<!-- Search Results -->
 <section id="search-results"></section>
 
-<!-- SHELF CREATOR -->
-<section id="shelf-manager">
+<!-- Custom Shelves -->
+<section id="custom-shelves">
 <h3>Custom Shelves</h3>
-<input id="new-shelf-name" placeholder="Create shelf">
+
+<input type="text" id="new-shelf-name" placeholder="Create shelf">
 <button id="create-shelf">Add Shelf</button>
+
 <div id="shelf-list"></div>
 </section>
 
-<!-- FILTERS -->
-<section id="filters">
+<!-- Add Book Form -->
+<section id="add-book-section">
+<form id="book-form">
+<input type="text" id="title" placeholder="Title" required>
+<input type="text" id="author" placeholder="Author" required>
 
-<label>Status</label>
+<select id="status">
+<option value="want">Want To Read</option>
+<option value="reading">Reading</option>
+<option value="finished">Finished</option>
+</select>
+
+<button type="submit">Add Book</button>
+
+</form>
+</section>
+
+<!-- Filter & Sort Controls -->
+<section id="filter-sort-section">
+
+<label>Filter by Status:
+
 <select id="filter-status">
 <option value="all">All</option>
 <option value="want">Want To Read</option>
@@ -39,24 +63,41 @@
 <option value="finished">Finished</option>
 </select>
 
-<label>Shelf</label>
-<select id="filter-shelf">
-<option value="all">All Shelves</option>
-</select>
+</label>
 
-<label>Sort</label>
+<label>Sort by:
+
 <select id="sort-by">
 <option value="title">Title</option>
 <option value="author">Author</option>
 <option value="rating">Rating</option>
 </select>
 
+</label>
+
 </section>
 
-<!-- LIBRARY GRID -->
-<section id="library-grid"></section>
+<!-- Shelves -->
+<section id="library-section" class="shelves-container">
 
-<!-- BOOK MODAL -->
+<div class="shelf-container" data-status="want">
+<h2>Want To Read</h2>
+<div id="wantShelf" class="shelf drop-zone"></div>
+</div>
+
+<div class="shelf-container" data-status="reading">
+<h2>Reading</h2>
+<div id="readingShelf" class="shelf drop-zone"></div>
+</div>
+
+<div class="shelf-container" data-status="finished">
+<h2>Finished</h2>
+<div id="finishedShelf" class="shelf drop-zone"></div>
+</div>
+
+</section>
+
+<!-- Book Details Modal -->
 <div id="book-modal" class="modal">
 
 <div class="modal-content">
@@ -69,13 +110,19 @@
 
 <p id="modal-author"></p>
 
-<label>Progress</label>
-<input id="modal-progress" type="number">
+<p id="modal-publish"></p>
 
-<label>Review</label>
-<textarea id="modal-review"></textarea>
+<p id="modal-description"></p>
 
-<button id="save-book">Save</button>
+<hr>
+
+<label>Reading Progress (pages)</label>
+<input type="number" id="modal-progress">
+
+<label>Your Review</label>
+<textarea id="modal-review" rows="4"></textarea>
+
+<button id="save-book-details">Save</button>
 
 </div>
 
