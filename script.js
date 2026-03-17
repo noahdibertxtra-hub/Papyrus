@@ -131,6 +131,8 @@ async function performSearch(query){
       const author = doc.author_name ? doc.author_name.join(", ") : "Unknown Author";
       const cover = doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg` : "https://via.placeholder.com/100";
 
+      const totalPages = doc.number_of_pages_median || 100;
+      
       card.innerHTML = `
         <img src="${cover}" alt="Book Cover">
         <h4>${title}</h4>
