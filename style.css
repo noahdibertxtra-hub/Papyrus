@@ -249,7 +249,3 @@ section {
   opacity: 1;
   bottom: 50px;
 }
-/* Hide manual add form */
-#add-book-section {
-  display: none;
-}
