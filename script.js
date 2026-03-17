@@ -2,7 +2,8 @@ let library = JSON.parse(localStorage.getItem("library")) || [];
 let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 
 // Book constructor
-function Book(title, author, status="want", rating=0, cover="https://via.placeholder.com/100", notes="", tags=[]) {
+function Book(title, author, status="want", rating=0, cover="https://via.placeholder.com/100", notes="", tags=[], currentPage=0, totalPages=100) {
+  this.id = crypto.randomUUID();
   this.title = title;
   this.author = author;
   this.status = status;
@@ -10,6 +11,8 @@ function Book(title, author, status="want", rating=0, cover="https://via.placeho
   this.cover = cover;
   this.notes = notes;
   this.tags = tags;
+  this.currentPage = currentPage;
+  this.totalPages = totalPages;
 }
 
 // Elements
