@@ -147,7 +147,7 @@ card.querySelector(".add-btn").addEventListener("click", ()=>{
   animateBookToShelf(coverImg);
 
   if(!library.some(b=>b.title===title && b.author===author)){
-    library.push(new Book(title, author, "want",0,cover));
+    library.push(new Book(title, author, "want", 0, cover, "", [], 0, totalPages));
     localStorage.setItem("library",JSON.stringify(library));
     renderLibrary();
 
