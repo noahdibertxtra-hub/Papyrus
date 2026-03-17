@@ -212,20 +212,33 @@ function renderLibrary(){
     let tagsHTML = "";
     if(book.tags && book.tags.length>0) tagsHTML = "<p>Tags: "+book.tags.join(", ")+"</p>";
 
-    card.innerHTML = `
-      <img src="${book.cover}" alt="Book Cover">
-      <h4>${book.title}</h4>
-      <p>${book.author}</p>
-      <label>Status:</label>
-      <select class="status-dropdown" data-index="${index}">
-        <option value="want" ${book.status==="want"?"selected":""}>Want To Read</option>
-        <option value="reading" ${book.status==="reading"?"selected":""}>Reading</option>
-        <option value="finished" ${book.status==="finished"?"selected":""}>Finished</option>
-      </select>
-      ${starsHTML}
-      ${tagsHTML}
-      <button class="remove-btn">Remove</button>
-    `;
+    const progressPercent = Math.min(100, Math.floor((book.currentPage / book.totalPages) * 100));
+
+card.innerHTML = `
+  <img src="${book.cover}">
+  <h4>${book.title}</h4>
+  <p>${book.author}</p>
+
+  <select class="status-dropdown">
+    <option value="want" ${book.status==="want"?"selected":""}>Want To Read</option>
+    <option value="reading" ${book.status==="reading"?"selected":""}>Reading</option>
+    <option value="finished" ${book.status==="finished"?"selected":""}>Finished</option>
+  </select>
+
+  <div class="progress-container">
+    <div class="progress-bar" style="width: ${progressPercent}%"></div>
+  </div>
+
+  <div class="progress-input">
+    <input type="number" class="current-page" value="${book.currentPage}" min="0">
+    /
+    <input type="number" class="total-pages" value="${book.totalPages}" min="1">
+  </div>
+
+  ${starsHTML}
+
+  <button class="remove-btn">Remove</button>
+`;
 
     // Status change
     card.querySelector(".status-dropdown").addEventListener("change",e=>{
