@@ -247,6 +247,22 @@ card.innerHTML = `
       renderLibrary();
     });
 
+// ===== Progress Update =====
+const currentInput = card.querySelector(".current-page");
+const totalInput = card.querySelector(".total-pages");
+
+currentInput.addEventListener("change", ()=>{
+  book.currentPage = parseInt(currentInput.value) || 0;
+  saveLibrary();
+  renderLibrary();
+});
+
+totalInput.addEventListener("change", ()=>{
+  book.totalPages = parseInt(totalInput.value) || 1;
+  saveLibrary();
+  renderLibrary();
+});
+
     // Stars
     const stars = card.querySelectorAll(".star");
     stars.forEach((s,i)=>{
