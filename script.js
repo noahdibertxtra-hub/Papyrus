@@ -1,4 +1,3 @@
-
 let library = JSON.parse(localStorage.getItem("library")) || [];
 let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 
