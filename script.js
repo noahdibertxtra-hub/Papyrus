@@ -49,6 +49,38 @@ function showToast(message) {
     toast.classList.remove("show");
   }, 2000);
 }
+function animateBookToShelf(imageElement) {
+
+  const shelf = document.getElementById("wantShelf");
+
+  if(!shelf) return;
+
+  const imgRect = imageElement.getBoundingClientRect();
+  const shelfRect = shelf.getBoundingClientRect();
+
+  const flyingBook = imageElement.cloneNode();
+
+  flyingBook.classList.add("fly-book");
+
+  flyingBook.style.left = imgRect.left + "px";
+  flyingBook.style.top = imgRect.top + "px";
+
+  document.body.appendChild(flyingBook);
+
+  setTimeout(()=>{
+
+    const deltaX = shelfRect.left - imgRect.left;
+    const deltaY = shelfRect.top - imgRect.top;
+
+    flyingBook.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.3)`;
+    flyingBook.style.opacity = "0.3";
+
+  },10);
+
+  setTimeout(()=>{
+    flyingBook.remove();
+  },700);
+}
 
 // ===== Book Form =====
 bookForm.addEventListener("submit", e=>{
