@@ -135,16 +135,23 @@ async function performSearch(query){
         <button class="add-btn">Add Book</button>
       `;
 
-      card.querySelector(".add-btn").addEventListener("click", ()=>{
-  if(!library.some(b=>b.title.toLowerCase()===title.toLowerCase() && b.author.toLowerCase()===author.toLowerCase())){
+card.querySelector(".add-btn").addEventListener("click", ()=>{
+
+  const coverImg = card.querySelector("img");
+
+  animateBookToShelf(coverImg);
+
+  if(!library.some(b=>b.title===title && b.author===author)){
     library.push(new Book(title, author, "want",0,cover));
     localStorage.setItem("library",JSON.stringify(library));
     renderLibrary();
+
     searchResults.innerHTML="";
     searchInput.value="";
   }else{
-    alert("Book already in library!");
+    showToast("Book already in library");
   }
+
 });
 
       searchResults.appendChild(card);
