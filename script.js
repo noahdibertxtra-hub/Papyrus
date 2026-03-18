@@ -140,17 +140,7 @@ async function performSearch(query){
         <button class="add-btn">Add Book</button>
       `;
 
-const coverImg = card.querySelector("img");
-
-coverImg.addEventListener("click", (e) => {
-  e.stopPropagation(); // prevents the click from affecting the card
-  modalCover.src = book.cover;
-  modalTitle.textContent = book.title;
-  modalAuthor.textContent = "Author: " + book.author;
-  modalPublish.textContent = "";
-  modalDesc.innerHTML = `<p>${book.notes || "No notes yet."}</p>`;
-  modal.style.display = "block";
-});
+card.querySelector(".add-btn").addEventListener("click", ()=>{
 
   const coverImg = card.querySelector("img");
 
