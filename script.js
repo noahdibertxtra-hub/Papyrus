@@ -276,17 +276,6 @@ totalInput.addEventListener("change", ()=>{
       renderLibrary();
     });
 
-    // Click card to modal
-    card.addEventListener("click",e=>{
-      if(e.target.classList.contains("add-btn") || e.target.classList.contains("remove-btn") || e.target.tagName==="SELECT" || e.target.classList.contains("star")) return;
-      modalCover.src=book.cover;
-      modalTitle.textContent=book.title;
-      modalAuthor.textContent="Author: "+book.author;
-      modalPublish.textContent="";
-      modalDesc.innerHTML=`<p>${book.notes || "No notes yet."}</p>`;
-      modal.style.display="block";
-    });
-
     if(book.status==="want") wantShelf.appendChild(card);
     if(book.status==="reading") readingShelf.appendChild(card);
     if(book.status==="finished") finishedShelf.appendChild(card);
@@ -364,10 +353,6 @@ function renderStats(){
     reader.readAsText(file);
   });
 }
-
-// ===== Modal Close =====
-closeBtn.addEventListener("click",()=>modal.style.display="none");
-window.addEventListener("click",e=>{if(e.target===modal) modal.style.display="none";});
 
 // ===== Events =====
 searchButton.addEventListener("click",()=>performSearch());
