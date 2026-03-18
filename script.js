@@ -25,15 +25,6 @@ const searchHistoryEl = document.getElementById("search-history");
 const filterStatus = document.getElementById("filter-status");
 const sortBy = document.getElementById("sort-by");
 
-// Modal elements
-const modal = document.getElementById("book-modal");
-const modalCover = document.getElementById("modal-cover");
-const modalTitle = document.getElementById("modal-title");
-const modalAuthor = document.getElementById("modal-author");
-const modalPublish = document.getElementById("modal-publish");
-const modalDesc = document.getElementById("modal-description");
-const closeBtn = document.querySelector(".close-btn");
-
 // Stats elements
 let statsContainer = document.getElementById("library-stats");
 if(!statsContainer){
