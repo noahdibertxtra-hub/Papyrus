@@ -222,11 +222,12 @@ card.innerHTML = `
     <div class="progress-bar" style="width: ${progressPercent}%"></div>
   </div>
 
-  <div class="progress-input">
-    <input type="number" class="current-page" value="${book.currentPage}" min="0">
-    /
-    <input type="number" class="total-pages" value="${book.totalPages}" min="1">
-  </div>
+<div class="progress-input">
+  <input type="number" class="current-page" value="${book.currentPage}" min="0">
+  /
+  <input type="number" class="total-pages" value="${book.totalPages}" min="1">
+  <button class="progress-save">✔</button>
+</div>
 
   ${starsHTML}
 
