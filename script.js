@@ -241,19 +241,16 @@ card.innerHTML = `
       renderLibrary();
     });
 
-// ===== Progress Update =====
+// ===== Progress Update (Manual Save Button) =====
 const currentInput = card.querySelector(".current-page");
 const totalInput = card.querySelector(".total-pages");
+const saveBtn = card.querySelector(".progress-save");
 
-currentInput.addEventListener("change", ()=>{
+saveBtn.addEventListener("click", () => {
   book.currentPage = parseInt(currentInput.value) || 0;
-  saveLibrary();
-  renderLibrary();
-});
-
-totalInput.addEventListener("change", ()=>{
   book.totalPages = parseInt(totalInput.value) || 1;
-  saveLibrary();
+
+  localStorage.setItem("library", JSON.stringify(library));
   renderLibrary();
 });
 
