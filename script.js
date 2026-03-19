@@ -220,7 +220,10 @@ card.innerHTML = `
 
   <div class="progress-container">
   <div class="progress-bar" style="width: ${progressPercent}%">
-    <span class="progress-text">${progressPercent}%</span>
+    <span class="progress-text" style="color: ${progressPercent < 20 ? '#333' : '#fff'}">
+  ${progressPercent}%
+</span>
+
   </div>
 </div>
 
