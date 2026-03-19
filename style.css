@@ -254,6 +254,14 @@ section {
   position: relative;
 }
 
+/* Percentage text inside the bar */
+.progress-text {
+  position: absolute;
+  font-size: 11px;
+  font-weight: bold;
+  pointer-events: none;
+}
+
 /* Page Inputs */
 .progress-input {
   display: flex;
