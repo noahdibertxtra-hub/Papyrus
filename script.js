@@ -219,8 +219,10 @@ card.innerHTML = `
   </select>
 
   <div class="progress-container">
-    <div class="progress-bar" style="width: ${progressPercent}%"></div>
+  <div class="progress-bar" style="width: ${progressPercent}%">
+    <span class="progress-text">${progressPercent}%</span>
   </div>
+</div>
 
 <div class="progress-input">
   <input type="number" class="current-page" value="${book.currentPage}" min="0">
