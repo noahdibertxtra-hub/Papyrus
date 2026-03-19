@@ -239,6 +239,7 @@ section {
   border-radius: 5px;
   overflow: hidden;
   margin: 5px 0;
+  position: relative;
 }
 
 .progress-bar {
@@ -246,6 +247,11 @@ section {
   background: #4CAF50;
   width: 0%;
   transition: width 0.3s ease;
+  
+  display: flex;              
+  align-items: center;        
+  justify-content: center;    
+  position: relative;
 }
 
 /* Page Inputs */
