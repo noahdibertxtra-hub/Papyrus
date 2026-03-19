@@ -223,7 +223,6 @@ card.innerHTML = `
     <span class="progress-text" style="color: ${progressPercent < 20 ? '#333' : '#fff'}">
   ${progressPercent}%
 </span>
-
   </div>
 </div>
 
