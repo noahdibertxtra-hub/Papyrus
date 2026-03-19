@@ -233,8 +233,8 @@ section {
 }
 /* Progress Bar */
 .progress-container {
-  width: 120%;
-  height: 10px;
+  width: 140%;
+  height: 12px;
   background: #ddd;
   border-radius: 5px;
   overflow: hidden;
