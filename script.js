@@ -308,6 +308,26 @@ saveBtn.addEventListener("click", () => {
   });
 
   renderStats();
+  renderProgression();
+}
+function renderProgression() {
+  const xp = calculateXP();
+  const level = Math.floor(xp / 50);
+
+  document.getElementById("level").textContent = `Level ${level} (${xp} XP)`;
+
+  // Main Path
+  const finished = library.filter(b => b.status === "finished").length;
+  const mainPath = document.getElementById("main-path");
+  mainPath.innerHTML = "";
+
+  for (let i = 0; i < 10; i++) {
+    const node = document.createElement("span");
+    node.textContent = i < finished ? "●" : "○";
+    node.style.fontSize = "20px";
+    node.style.margin = "2px";
+    mainPath.appendChild(node);
+  }
 }
 
 // ===== Library Stats =====
