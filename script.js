@@ -383,6 +383,11 @@ darkToggle.addEventListener("click", () => {
   }
 });
 
+function calculateXP() {
+  const finished = library.filter(b => b.status === "finished").length;
+  return finished * 10;
+}
+
 // ===== Init =====
 renderSearchHistory();
 renderLibrary();
